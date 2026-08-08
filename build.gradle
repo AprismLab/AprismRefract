@@ -26,7 +26,7 @@ java {
 // compileOnly: the API is provided by the Aprism runtime at load time, so the
 // extension jar must not bundle it.
 dependencies {
-    compileOnly files('../Aprism/aprism-api/build/libs/aprism-api-v26.0-Alpha.4.jar')
+    compileOnly files('../Aprism/aprism-api/build/libs/aprism-api-v26.0-Alpha.8.jar')
 }
 
 jar {
