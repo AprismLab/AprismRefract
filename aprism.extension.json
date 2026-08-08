@@ -1,0 +1,12 @@
+{
+  "extensionId": "forge-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,27.0.0)",
+  "loaderKey": "Fo",
+  "loaderRange": "[54.0.0,55.0.0)",
+  "mcEdit": null,
+  "mcVersion": null,
+  "entrypoint": "com.aprism.refract.forge.ForgeSupportExtension",
+  "provides": ["forge-loader"],
+  "depends": {}
+}

@@ -22,7 +22,7 @@ Aprism repository.
 | `main` | shared skeleton, docs, extension SDK conventions | - | - | foundation |
 | `fabric` | Fabric | `Fa` | `fabric-mods/` | developed (migrated from Aprism) |
 | `neoforge` | NeoForge | `N` | `neoforge-mods/` | developed |
-| `forge` | Forge | `Fo` | `forge-mods/` | placeholder |
+| `forge` | Forge | `Fo` | `forge-mods/` | developed |
 | `quilt` | Quilt | `Q` | `quilt-mods/` | placeholder |
 | `liteloader` | LiteLoader | `L` | `liteloader-mods/` | placeholder |
 

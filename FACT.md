@@ -24,7 +24,7 @@ One loader per branch; `main` holds only shared skeleton/docs.
 | main | shared skeleton | - | - | foundation |
 | fabric | Fabric | Fa | fabric-mods/ | developed (migrated from Aprism) |
 | neoforge | NeoForge | N | neoforge-mods/ | developed |
-| forge | Forge | Fo | forge-mods/ | placeholder |
+| forge | Forge | Fo | forge-mods/ | developed |
 | quilt | Quilt | Q | quilt-mods/ | placeholder |
 | liteloader | LiteLoader | L | liteloader-mods/ | placeholder |
 
@@ -47,6 +47,20 @@ One loader per branch; `main` holds only shared skeleton/docs.
   only the .aep entrypoint class + manifest per loader.
 - [STATUS] fabric branch: developed + cross-repo E2E verified (Fabric-Support.aep).
 - [STATUS] neoforge branch: developed + cross-repo E2E verified (NeoForge-Support.aep).
+
+### Session 2026-08-09 (forge branch)
+- [DONE] Merged main into forge (picked up docs/extension-sdk-conventions.md).
+- [DONE] forge branch: ForgeSupportExtension (com.aprism.refract.forge) +
+  aprism.extension.json (loaderKey Fo, loaderRange [54.0.0,55.0.0), provides
+  forge-loader) + self-contained Gradle build (settings.gradle via
+  pluginManagement.includeBuild of ../Aprism/aprism-packaging, compileOnly
+  against aprism-api-v26.0-Alpha.8.jar).
+- [DONE] ./gradlew build + packageAep green; produced
+  Forge-Support-A[26.0,27.0)-Fo[54.0,55.0)-JE-26.2.aep.
+- [DONE] Cross-repo E2E verified: Aprism RefractForgeAepE2ETest loads this
+  branch's .aep through the real runtime and constructs a Forge-style mod
+  (tests=1 skipped=0, green).
+- [STATUS] forge branch: developed + cross-repo E2E verified (Forge-Support.aep).
 
 ### Session 2026-08-08 (foundation)
 - [DONE] Repository initialized (LICENSE + README).
