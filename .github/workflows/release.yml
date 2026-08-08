@@ -93,7 +93,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete "${{ github.ref_name }}" --yes 2>$null
+          gh release delete "${{ github.ref_name }}" --repo NDBlockConnect/AprismRefract --yes 2>$null
           exit 0
 
       - name: Create Pre-Release
@@ -129,4 +129,4 @@ jobs:
             --certificate-oidc-issuer https://token.actions.githubusercontent.com
           ``````
           "@
-          gh release create $ver dist/* --prerelease --title $ver --notes $notes
+          gh release create $ver dist/* --prerelease --title $ver --notes $notes --repo NDBlockConnect/AprismRefract
