@@ -48,9 +48,9 @@ document the deviation here.
 |---|---|---|---|---|---|
 | fabric | Fabric | `Fa` | `fabric-mods/` | `fabric.mod.json` -> AprismManifest | `entrypoints.main/client/server` (no-arg `onInitialize`-style methods, invoked via `FabricEntrypointBridge`) |
 | neoforge | NeoForge | `N` | `neoforge-mods/` | `META-INF/neoforge.mods.toml` -> AprismManifest | `@Mod` annotated class, constructor injection (via `NeoForgeEntrypointBridge`) |
-| forge | Forge | `Fo` | `forge-mods/` | `META-INF/mods.toml` -> AprismManifest | `@Mod` annotated class, constructor |
-| quilt | Quilt | `Q` | `quilt-mods/` | `quilt.mod.json` -> AprismManifest | entrypoints (Fabric-like) |
-| liteloader | LiteLoader | `L` | `liteloader-mods/` | `litemod.json` -> AprismManifest | `init()` |
+| forge | Forge | `Fo` | `forge-mods/` | `META-INF/mods.toml` -> AprismManifest (section-aware; honors `mandatory`) | `@Mod` annotated class, IEventBus constructor injection (via `ForgeEntrypointBridge`) |
+| quilt | Quilt | `Q` | `quilt-mods/` | `quilt.mod.json` -> AprismManifest (`quilt_loader` block; `init` key -> `main`) | entrypoints (Fabric-compatible: Quilt ships a built-in Fabric API compat layer; dispatched via `FabricEntrypointBridge`) |
+| liteloader | LiteLoader | `L` | `liteloader-mods/` | `litemod.json` -> AprismManifest | `LiteMod` interface implementation, `init(File)` (via `LiteLoaderEntrypointBridge`) |
 
 Keys and folders are reserved per Aprism FACT.md 9.14. Do not introduce new
 keys without updating Aprism `ModDiscoverer` and this table together.
@@ -143,3 +143,4 @@ in FACT.md.
 | Date | Change |
 |---|---|
 | 2026-08-09 | Initial SDK conventions document created on main. Clarified that entrypoint bridges and loader API shims live in Aprism `aprism-loader-core`, while the `.aep` entrypoint class + manifest live in this repository's loader branches. |
+| 2026-08-09 | Refined the Section 3 loader registry to the exact implemented conventions: Forge section-aware `mods.toml` (honors `mandatory`) + IEventBus constructor injection; Quilt `quilt_loader` block with `init` -> `main` projection and Fabric-compatible dispatch (Quilt's built-in Fabric API compat layer); LiteLoader `LiteMod` interface discovery + `init(File)`. All five loader branches are now developed. |

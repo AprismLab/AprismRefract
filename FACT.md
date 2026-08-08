@@ -25,8 +25,8 @@ One loader per branch; `main` holds only shared skeleton/docs.
 | fabric | Fabric | Fa | fabric-mods/ | developed (migrated from Aprism) |
 | neoforge | NeoForge | N | neoforge-mods/ | developed |
 | forge | Forge | Fo | forge-mods/ | developed |
-| quilt | Quilt | Q | quilt-mods/ | placeholder |
-| liteloader | LiteLoader | L | liteloader-mods/ | placeholder |
+| quilt | Quilt | Q | quilt-mods/ | developed |
+| liteloader | LiteLoader | L | liteloader-mods/ | developed |
 
 ## 3. Conventions
 
