@@ -1,0 +1,52 @@
+// Quilt-Support Aprism Extension (.aep)
+// Loader-support extension (loader key "Q") that lets Aprism Loader scan
+// quilt-mods/ and load genuine Quilt mods.
+//
+// The extension is self-contained on this branch: it compiles against the
+// Aprism API jar only (compileOnly) and defines its own loader-key constants.
+// Quilt loader ships a built-in Fabric API compatibility layer, so Quilt mods
+// implement net.fabricmc.api.ModInitializer and are dispatched through
+// Aprism's Fabric-convention bridge in aprism-loader-core; this project
+// provides the extension entrypoint that registers the loader-support folder
+// and is packaged into the .aep.
+
+plugins {
+    id 'java'
+    id 'com.aprism.packaging'
+}
+
+group = 'com.aprism.refract'
+version = 'v26.0-Alpha.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+// Compile against the Aprism API jar built from the Aprism workspace.
+// compileOnly: the API is provided by the Aprism runtime at load time, so the
+// extension jar must not bundle it.
+dependencies {
+    compileOnly files('../Aprism/aprism-api/build/libs/aprism-api-v26.0-Alpha.8.jar')
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'AprismRefract Quilt-Support',
+                   'Implementation-Version': project.version
+    }
+}
+
+// The Aprism packaging plugin registers packageAep. We configure it to bundle
+// this extension's jar and the aprism.extension.json manifest.
+aprismPackaging {
+    outputDir = 'build/aprism'
+}
+
+packageAep {
+    dependsOn jar
+    inputJars = files(jar.archiveFile)
+    manifestFile = file('aprism.extension.json')
+    outputFile = file("build/aprism/Quilt-Support-A[26.0,27.0)-Q[0.29,0.30)-JE-26.2.aep")
+}

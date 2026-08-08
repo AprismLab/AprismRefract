@@ -25,7 +25,7 @@ One loader per branch; `main` holds only shared skeleton/docs.
 | fabric | Fabric | Fa | fabric-mods/ | developed (migrated from Aprism) |
 | neoforge | NeoForge | N | neoforge-mods/ | developed |
 | forge | Forge | Fo | forge-mods/ | placeholder |
-| quilt | Quilt | Q | quilt-mods/ | placeholder |
+| quilt | Quilt | Q | quilt-mods/ | developed |
 | liteloader | LiteLoader | L | liteloader-mods/ | placeholder |
 
 ## 3. Conventions
@@ -47,6 +47,25 @@ One loader per branch; `main` holds only shared skeleton/docs.
   only the .aep entrypoint class + manifest per loader.
 - [STATUS] fabric branch: developed + cross-repo E2E verified (Fabric-Support.aep).
 - [STATUS] neoforge branch: developed + cross-repo E2E verified (NeoForge-Support.aep).
+
+### Session 2026-08-09 (quilt branch)
+- [DONE] Merged main into quilt (picked up docs/extension-sdk-conventions.md).
+- [DONE] quilt branch: QuiltSupportExtension (com.aprism.refract.quilt) +
+  aprism.extension.json (loaderKey Q, loaderRange [0.29.0,0.30.0), provides
+  quilt-loader) + self-contained Gradle build (settings.gradle via
+  pluginManagement.includeBuild of ../Aprism/aprism-packaging, compileOnly
+  against aprism-api-v26.0-Alpha.8.jar).
+- [DONE] ./gradlew build + packageAep green; produced
+  Quilt-Support-A[26.0,27.0)-Q[0.29,0.30)-JE-26.2.aep.
+- [DONE] Cross-repo E2E verified: Aprism RefractQuiltAepE2ETest loads this
+  branch's .aep through the real runtime and invokes a Quilt-style mod's
+  init entrypoint (tests=1 skipped=0 failures=0, green).
+- [NOTE] Quilt loader ships a built-in Fabric API compatibility layer, so
+  Quilt mods implement net.fabricmc.api.ModInitializer and are dispatched via
+  Aprism's Fabric-convention bridge; the Quilt-native init entrypoint key is
+  projected to main during manifest projection. This branch carries only the
+  .aep entrypoint class + manifest per the SDK conventions.
+- [STATUS] quilt branch: developed + cross-repo E2E verified (Quilt-Support.aep).
 
 ### Session 2026-08-08 (foundation)
 - [DONE] Repository initialized (LICENSE + README).

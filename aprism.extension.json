@@ -1,0 +1,12 @@
+{
+  "extensionId": "quilt-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,27.0.0)",
+  "loaderKey": "Q",
+  "loaderRange": "[0.29.0,0.30.0)",
+  "mcEdit": null,
+  "mcVersion": null,
+  "entrypoint": "com.aprism.refract.quilt.QuiltSupportExtension",
+  "provides": ["quilt-loader"],
+  "depends": {}
+}
