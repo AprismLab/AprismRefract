@@ -1,0 +1,51 @@
+// Fabric-Support Aprism Extension (.aep)
+// Loader-support extension (loader key "Fa") that lets Aprism Loader scan
+// fabric-mods/ and load genuine Fabric mods.
+//
+// The extension is self-contained on this branch: it compiles against the
+// Aprism API jar only (compileOnly) and defines its own loader-key constants.
+// The Fabric runtime bridge (FabricEntrypointBridge + Fabric API shim) lives
+// in Aprism's aprism-loader-core; this project provides the extension
+// entrypoint that registers the loader-support folder and is packaged into
+// the .aep.
+
+plugins {
+    id 'java'
+    id 'com.aprism.packaging'
+}
+
+group = 'com.aprism.refract'
+version = 'v26.0-Alpha.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+// Compile against the Aprism API jar built from the Aprism workspace.
+// compileOnly: the API is provided by the Aprism runtime at load time, so the
+// extension jar must not bundle it.
+dependencies {
+    compileOnly files('../Aprism/aprism-api/build/libs/aprism-api-v26.0-Alpha.5.jar')
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'AprismRefract Fabric-Support',
+                   'Implementation-Version': project.version
+    }
+}
+
+// The Aprism packaging plugin registers packageAep. We configure it to bundle
+// this extension's jar and the aprism.extension.json manifest.
+aprismPackaging {
+    outputDir = 'build/aprism'
+}
+
+packageAep {
+    dependsOn jar
+    inputJars = files(jar.archiveFile)
+    manifestFile = file('aprism.extension.json')
+    outputFile = file("build/aprism/Fabric-Support-A[26.0,27.0)-Fa[0.16,0.17)-JE-26.2.aep")
+}

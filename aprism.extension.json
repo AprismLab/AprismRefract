@@ -1,0 +1,12 @@
+{
+  "extensionId": "fabric-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,27.0.0)",
+  "loaderKey": "Fa",
+  "loaderRange": "[0.16.0,0.17.0)",
+  "mcEdit": null,
+  "mcVersion": null,
+  "entrypoint": "com.aprism.refract.fabric.FabricSupportExtension",
+  "provides": ["fabric-loader"],
+  "depends": {}
+}
