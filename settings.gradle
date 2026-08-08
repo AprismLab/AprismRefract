@@ -1,0 +1,17 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    // Consume the Aprism packaging plugin from the Aprism workspace (sibling
+    // repository). The plugin assembles the .aep archive.
+    includeBuild '../Aprism/aprism-packaging'
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'AprismRefract-LiteLoader-Support'

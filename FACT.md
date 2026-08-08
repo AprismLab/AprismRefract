@@ -26,7 +26,7 @@ One loader per branch; `main` holds only shared skeleton/docs.
 | neoforge | NeoForge | N | neoforge-mods/ | developed |
 | forge | Forge | Fo | forge-mods/ | placeholder |
 | quilt | Quilt | Q | quilt-mods/ | placeholder |
-| liteloader | LiteLoader | L | liteloader-mods/ | placeholder |
+| liteloader | LiteLoader | L | liteloader-mods/ | developed |
 
 ## 3. Conventions
 
@@ -47,6 +47,30 @@ One loader per branch; `main` holds only shared skeleton/docs.
   only the .aep entrypoint class + manifest per loader.
 - [STATUS] fabric branch: developed + cross-repo E2E verified (Fabric-Support.aep).
 - [STATUS] neoforge branch: developed + cross-repo E2E verified (NeoForge-Support.aep).
+
+### Session 2026-08-09 (liteloader branch)
+- [DONE] Merged main into liteloader (picked up
+  docs/extension-sdk-conventions.md).
+- [DONE] liteloader branch: LiteLoaderSupportExtension
+  (com.aprism.refract.liteloader) + aprism.extension.json (loaderKey L,
+  loaderRange [1.12.0,1.13.0), provides liteloader) + self-contained Gradle
+  build (settings.gradle via pluginManagement.includeBuild of
+  ../Aprism/aprism-packaging, compileOnly against
+  aprism-api-v26.0-Alpha.8.jar).
+- [DONE] ./gradlew build + packageAep green; produced
+  LiteLoader-Support-A[26.0,27.0)-L[1.12,1.13)-JE-26.2.aep.
+- [DONE] Cross-repo E2E verified: Aprism RefractLiteLoaderAepE2ETest loads
+  this branch's .aep through the real runtime, discovers a .litemod mod by
+  LiteMod interface scanning, and invokes init(File) (tests=1 skipped=0
+  failures=0, green).
+- [NOTE] LiteLoader entrypoints are not declared in the manifest; the mod
+  class implements com.mumfrey.liteloader.core.LiteMod and is discovered by
+  bytecode scanning; initialization is the single init(File) call with the
+  mod's config folder. The bridge + LiteMod shim live in Aprism
+  aprism-loader-core; this branch carries only the .aep entrypoint class +
+  manifest per the SDK conventions.
+- [STATUS] liteloader branch: developed + cross-repo E2E verified
+  (LiteLoader-Support.aep).
 
 ### Session 2026-08-08 (foundation)
 - [DONE] Repository initialized (LICENSE + README).

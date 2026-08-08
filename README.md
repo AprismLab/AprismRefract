@@ -24,7 +24,7 @@ Aprism repository.
 | `neoforge` | NeoForge | `N` | `neoforge-mods/` | developed |
 | `forge` | Forge | `Fo` | `forge-mods/` | placeholder |
 | `quilt` | Quilt | `Q` | `quilt-mods/` | placeholder |
-| `liteloader` | LiteLoader | `L` | `liteloader-mods/` | placeholder |
+| `liteloader` | LiteLoader | `L` | `liteloader-mods/` | developed |
 
 Rules:
 
