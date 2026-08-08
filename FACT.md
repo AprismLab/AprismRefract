@@ -37,6 +37,17 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-09 (shared docs)
+- [DONE] Created docs/extension-sdk-conventions.md on main: the normative
+  loader-support extension SDK conventions (lifecycle, what lives in Aprism core
+  vs loader branches, loader key/folder registry, manifest + entrypoint
+  templates, build/release/version-alignment rules).
+- [DONE] Corrected README "Relationship to Aprism": entrypoint bridges and
+  loader API shim interfaces live in Aprism aprism-loader-core; this repo holds
+  only the .aep entrypoint class + manifest per loader.
+- [STATUS] fabric branch: developed + cross-repo E2E verified (Fabric-Support.aep).
+- [STATUS] neoforge branch: developed + cross-repo E2E verified (NeoForge-Support.aep).
+
 ### Session 2026-08-08 (foundation)
 - [DONE] Repository initialized (LICENSE + README).
 - [DONE] Rewrote README with branch model, versioning (mirrors Aprism),
@@ -44,9 +55,9 @@ One loader per branch; `main` holds only shared skeleton/docs.
   release/signing conventions, and the Aprism relationship statement.
 - [DONE] Created FACT.md (this file) and .gitignore.
 - [DONE] Configured repo-local SSH signing (same key as Aprism).
-- [IN PROGRESS] Create loader branches (fabric/neoforge/forge/quilt/liteloader)
-  from main and push.
-- [TODO] fabric branch: migrate FabricSupportExtension + FabricEntrypointBridge
-  + Fabric API shim from Aprism; build + test; package Fabric-Support.aep.
-- [TODO] neoforge branch: NeoForge-Support skeleton (developed alongside
+- [DONE] Created loader branches (fabric/neoforge/forge/quilt/liteloader)
+  from main and pushed.
+- [DONE] fabric branch: FabricSupportExtension + aprism.extension.json; build +
+  test + package Fabric-Support.aep (bridge/shim live in Aprism loader-core).
+- [DONE] neoforge branch: NeoForge-Support skeleton (developed alongside
   Aprism v26.0-Alpha.5).

@@ -105,9 +105,12 @@ settings.gradle). Signed commits + signed tags are mandatory
 ## Relationship to Aprism
 
 - Aprism core (agent, classloader, runtime, Mixin, remap, packaging) stays in
-  the Aprism repository.
-- This repository only contains loader-support extensions and the bridge code
-  they need. The Fabric API shim interfaces that were prototyped inside
-  Aprism's loader-core live on the `fabric` branch here going forward.
+  the Aprism repository. This includes the entrypoint bridges
+  (`FabricEntrypointBridge`, `NeoForgeEntrypointBridge`, ...) and the loader
+  API shim interfaces (`net.fabricmc.api.*`, `net.neoforged.fml.common.Mod`,
+  ...) which live in Aprism's `aprism-loader-core`.
+- This repository contains only the `.aep` entrypoint class + manifest for each
+  loader. See [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
+  for the normative split between Aprism core and loader branches.
 - Version alignment: an AprismRefract `v26.0-Alpha.<n>` is built against the
   matching Aprism `v26.0-Alpha.<n>` API surface.
