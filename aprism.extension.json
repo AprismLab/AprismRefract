@@ -1,0 +1,12 @@
+{
+  "extensionId": "neoforge-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,27.0.0)",
+  "loaderKey": "N",
+  "loaderRange": "[21.4.0,21.5.0)",
+  "mcEdit": null,
+  "mcVersion": null,
+  "entrypoint": "com.aprism.refract.neoforge.NeoForgeSupportExtension",
+  "provides": ["neoforge-loader"],
+  "depends": {}
+}
