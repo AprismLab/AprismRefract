@@ -1,0 +1,132 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'fabric/v*'
+      - 'neoforge/v*'
+      - 'forge/v*'
+      - 'quilt/v*'
+      - 'liteloader/v*'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout AprismRefract (subdirectory)
+        uses: actions/checkout@v4
+        with:
+          path: AprismRefract
+
+      - name: Checkout Aprism (sibling)
+        uses: actions/checkout@v4
+        with:
+          repository: NDBlockConnect/Aprism
+          path: Aprism
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Aprism API jar
+        working-directory: Aprism
+        run: ./gradlew :aprism-api:jar --console=plain
+
+      - name: Build and test
+        working-directory: AprismRefract
+        run: ./gradlew build --console=plain
+
+      - name: Package .aep
+        working-directory: AprismRefract
+        run: ./gradlew packageAep --console=plain
+
+      - name: Assemble artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item "AprismRefract/build/aprism/*.aep" "dist/"
+          Get-ChildItem dist/*.aep | ForEach-Object {
+            (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLower() + "  " + $_.Name |
+              Add-Content dist/checksums.txt
+          }
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign artifacts (keyless)
+        shell: pwsh
+        run: |
+          Get-ChildItem dist/*.aep | ForEach-Object {
+            cosign sign-blob --yes `
+              --bundle "dist/$($_.Name).bundle" `
+              --output-signature "dist/$($_.Name).sig" `
+              $_.FullName
+          }
+
+      - name: Setup Node for cdxgen
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate SBOM (CycloneDX)
+        shell: pwsh
+        run: |
+          $ver = "${{ github.ref_name }}"
+          $aepName = (Get-ChildItem dist/*.aep | Select-Object -First 1).Name
+          $loader = ($aepName -split '-Support')[0]
+          npm install -g @cyclonedx/cdxgen
+          Set-Location AprismRefract
+          cdxgen -t java --project-name "AprismRefract-$loader-Support" --project-version $ver -o ../dist/AprismRefract-$loader-sbom.cdx.json
+
+      - name: Delete existing release (if any)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "${{ github.ref_name }}" --yes 2>$null
+          exit 0
+
+      - name: Create Pre-Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ver = "${{ github.ref_name }}"
+          $aepFile = Get-ChildItem dist/*.aep | Select-Object -First 1
+          $aep = $aepFile.Name
+          $loader = ($aep -split '-Support')[0]
+          $notes = @"
+          AprismRefract $loader-Support $ver (Pre-Release)
+
+          Loader-support extension (.aep) for the $loader loader, built against
+          the Aprism v26.0 API surface. Targets Minecraft Java Edition 26.2.
+
+          **Contents**
+          - ``$aep``: the loader-support extension pack
+          - ``checksums.txt``: SHA-256 of the artifact
+          - ``.sig`` / ``.bundle``: cosign keyless signatures
+          - ``AprismRefract-$loader-sbom.cdx.json``: CycloneDX SBOM
+
+          **Install**
+          Place the ``.aep`` in ``<instance>/aprism-extensions/`` and launch with
+          Aprism Loader v26.0. Aprism then scans the loader's mod folder.
+
+          **Verify**
+          ``````
+          certutil -hashfile $aep SHA256   # compare with checksums.txt
+          cosign verify-blob $aep --bundle $aep.bundle `
+            --certificate-identity-regexp https://github.com/NDBlockConnect/AprismRefract `
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com
+          ``````
+          "@
+          gh release create $ver dist/* --prerelease --title $ver --notes $notes
