@@ -22,9 +22,9 @@ Aprism repository.
 | `main` | shared skeleton, docs, extension SDK conventions | - | - | foundation |
 | `fabric` | Fabric | `Fa` | `fabric-mods/` | developed (migrated from Aprism) |
 | `neoforge` | NeoForge | `N` | `neoforge-mods/` | developed |
-| `forge` | Forge | `Fo` | `forge-mods/` | placeholder |
-| `quilt` | Quilt | `Q` | `quilt-mods/` | placeholder |
-| `liteloader` | LiteLoader | `L` | `liteloader-mods/` | placeholder |
+| `forge` | Forge | `Fo` | `forge-mods/` | developed |
+| `quilt` | Quilt | `Q` | `quilt-mods/` | developed |
+| `liteloader` | LiteLoader | `L` | `liteloader-mods/` | developed |
 
 Rules:
 
@@ -93,7 +93,11 @@ settings.gradle). Signed commits + signed tags are mandatory
 
 ## Release & signing
 
-- Tags: `v26.0-Alpha.<n>` (and bare minor officials), SSH-signed.
+- Tags: loader-prefixed, `<loader>/v26.0-Alpha.<n>` (and bare
+  `<loader>/v26.0` for minor officials), SSH-signed. The loader prefix
+  disambiguates same-version tags across the five loader branches; the version
+  number itself mirrors the Aprism scheme unchanged. Example:
+  `forge/v26.0-Alpha.1`.
 - Artifacts: the `.aep`, `checksums.txt` (SHA-256), cosign keyless signature
   (`.sig` + `.bundle`), CycloneDX SBOM; published as GitHub Pre-Releases for
   Alpha builds and GitHub Releases for officials.
@@ -105,9 +109,12 @@ settings.gradle). Signed commits + signed tags are mandatory
 ## Relationship to Aprism
 
 - Aprism core (agent, classloader, runtime, Mixin, remap, packaging) stays in
-  the Aprism repository.
-- This repository only contains loader-support extensions and the bridge code
-  they need. The Fabric API shim interfaces that were prototyped inside
-  Aprism's loader-core live on the `fabric` branch here going forward.
+  the Aprism repository. This includes the entrypoint bridges
+  (`FabricEntrypointBridge`, `NeoForgeEntrypointBridge`, ...) and the loader
+  API shim interfaces (`net.fabricmc.api.*`, `net.neoforged.fml.common.Mod`,
+  ...) which live in Aprism's `aprism-loader-core`.
+- This repository contains only the `.aep` entrypoint class + manifest for each
+  loader. See [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
+  for the normative split between Aprism core and loader branches.
 - Version alignment: an AprismRefract `v26.0-Alpha.<n>` is built against the
   matching Aprism `v26.0-Alpha.<n>` API surface.
