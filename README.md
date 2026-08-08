@@ -22,8 +22,8 @@ Aprism repository.
 | `main` | shared skeleton, docs, extension SDK conventions | - | - | foundation |
 | `fabric` | Fabric | `Fa` | `fabric-mods/` | developed (migrated from Aprism) |
 | `neoforge` | NeoForge | `N` | `neoforge-mods/` | developed |
-| `forge` | Forge | `Fo` | `forge-mods/` | placeholder |
-| `quilt` | Quilt | `Q` | `quilt-mods/` | placeholder |
+| `forge` | Forge | `Fo` | `forge-mods/` | developed |
+| `quilt` | Quilt | `Q` | `quilt-mods/` | developed |
 | `liteloader` | LiteLoader | `L` | `liteloader-mods/` | developed |
 
 Rules:
@@ -93,7 +93,11 @@ settings.gradle). Signed commits + signed tags are mandatory
 
 ## Release & signing
 
-- Tags: `v26.0-Alpha.<n>` (and bare minor officials), SSH-signed.
+- Tags: loader-prefixed, `<loader>/v26.0-Alpha.<n>` (and bare
+  `<loader>/v26.0` for minor officials), SSH-signed. The loader prefix
+  disambiguates same-version tags across the five loader branches; the version
+  number itself mirrors the Aprism scheme unchanged. Example:
+  `forge/v26.0-Alpha.1`.
 - Artifacts: the `.aep`, `checksums.txt` (SHA-256), cosign keyless signature
   (`.sig` + `.bundle`), CycloneDX SBOM; published as GitHub Pre-Releases for
   Alpha builds and GitHub Releases for officials.
