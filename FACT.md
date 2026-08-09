@@ -35,7 +35,80 @@ One loader per branch; `main` holds only shared skeleton/docs.
   pluginManagement.includeBuild of the Aprism workspace.
 - No emoji in any artifact.
 
-## 4. Session Log
+## 4. Known Issues & Roadmap
+
+### Critical Issues (v26.0-Alpha.2 blockers)
+
+**ISSUE-001: Ambiguous MC version support in extension manifests**
+- **Severity:** Critical
+- **Impact:** Users cannot determine which .aep file works with their MC version
+- **Root cause:** loaderRange specifies loader version but mcVersion:null implies
+  "all MC versions" when in reality each loader version targets specific MC versions
+- **Resolution:** Create MC-version-specific .aep variants with explicit mcVersion
+  declarations; update artifact naming to include MC version segment
+
+**ISSUE-002: Forge branch manifest misconfiguration**
+- **Severity:** Critical
+- **Impact:** forge branch produces NeoForge-Support.aep instead of Forge-Support.aep
+- **Root cause:** forge/aprism.extension.json contains copy-pasted NeoForge config
+  (loaderKey:"N", modFolder:"neoforge-mods/")
+- **Resolution:** Correct manifest to loaderKey:"Fo", modFolder:"forge-mods/"
+
+**ISSUE-003: Single loader version per extension limits MC version coverage**
+- **Severity:** High
+- **Impact:** Cannot support wide MC version range (1.8.9–26.2) with single .aep
+  per loader
+- **Example:** Fabric Loader 0.16.x supports MC 1.21.4+ but 0.15.x needed for
+  1.20.x; Forge 14.23.x for 1.12.2 vs 52.x for 1.21.4
+- **Resolution:** Multi-variant release strategy per loader branch
+
+### v26.0-Alpha.2 Roadmap
+
+**Release Goals:**
+1. Fix forge branch manifest (ISSUE-002)
+2. Implement MC-version-specific extension variants (ISSUE-001, ISSUE-003)
+3. Publish version compatibility matrix documentation
+4. Release 15+ .aep variants covering MC 1.8.9–26.2 target range
+
+**Target MC Version Coverage:**
+- Modern: 26.2, 26.1.2, 1.21.10, 1.21.4, 1.20.6, 1.20.1
+- Legacy: 1.16.5, 1.12.2, 1.11.2, 1.10.2, 1.9.4, 1.8.9
+
+**Loader Version Mapping (preliminary):**
+```
+Fabric:
+  - [0.16.0,0.17.0) → MC 1.21.4, 1.21.10, 26.1.2, 26.2
+  - [0.15.0,0.16.0) → MC 1.20.1, 1.20.6
+  - [0.14.0,0.15.0) → MC 1.16.5
+  - Not applicable to MC 1.8.9–1.12.2 (Fabric requires 1.14+)
+
+NeoForge:
+  - [21.4.0,21.5.0) → MC 1.21.4, 1.21.10, 26.1.2, 26.2
+  - [21.0.0,21.1.0) → MC 1.20.1, 1.20.6
+  - Not applicable to MC <1.20.1 (NeoForge fork started at 1.20.1)
+
+Forge:
+  - [52.0.0,53.0.0) → MC 1.21.4
+  - [47.0.0,48.0.0) → MC 1.20.1
+  - [40.0.0,41.0.0) → MC 1.16.5
+  - [14.23.0,14.24.0) → MC 1.12.2
+  - [13.20.0,13.21.0) → MC 1.11.2
+  - [12.18.0,12.19.0) → MC 1.10.2
+  - [11.15.0,11.16.0) → MC 1.8.9
+
+Quilt:
+  - [0.29.0,0.30.0) → MC 1.21.4+
+  - [0.26.0,0.27.0) → MC 1.20.x
+  - Not applicable to MC <1.14
+
+LiteLoader:
+  - [1.12.0,1.13.0) → MC 1.12.2
+  - [1.11.0,1.12.0) → MC 1.11.2
+  - [1.10.0,1.11.0) → MC 1.10.2
+  - [1.8.0,1.9.0) → MC 1.8.9
+```
+
+## 5. Session Log
 
 ### Session 2026-08-09 (v26.0-Alpha.1 release)
 - [DONE] Merged main (docs + CI workflows) into all five loader branches;
@@ -64,6 +137,51 @@ One loader per branch; `main` holds only shared skeleton/docs.
 - [STATUS] All five loader branches: developed, E2E-verified, released at
   v26.0-Alpha.1. AprismRefract loader-support matrix is complete for the
   v26.0-Alpha.1 cycle.
+
+### Session 2026-08-10 (v26.0-Alpha.2 planning - version compatibility audit)
+- [INVESTIGATION] Conducted comprehensive version compatibility audit across all
+  five loader branches against Minecraft Java Edition 1.8.9–26.2 target range.
+- [CRITICAL ISSUE A] Version ranges too narrow and MC version mapping unclear:
+  Current loaderRange declarations (Fabric [0.16.0,0.17.0), NeoForge
+  [21.4.0,21.5.0), etc.) cover only single minor versions; manifest fields
+  mcEdit:null and mcVersion:null imply "all MC versions" but different MC
+  versions require different loader versions (e.g., Fabric Loader 0.16.x supports
+  MC 1.21.4+ but not 1.8.9–1.12.2).
+- [CRITICAL ISSUE B] Forge branch manifest configuration error: forge branch's
+  aprism.extension.json contains NeoForge configuration instead of Forge-specific
+  settings (loaderKey:"N", modFolder:"neoforge-mods/").
+- [ANALYSIS] MC version landscape for target range:
+  * MC 1.20.x–26.x stable releases: 26.2, 26.1.2, 1.21.10, 1.21.4, 1.20.6, 1.20.1
+  * MC 1.8.9–1.12.2 legacy stable: 1.12.2, 1.11.2, 1.10.2, 1.9.4, 1.8.9
+  * Loader version mapping per MC version:
+    - Fabric: 1.14+ only (no 1.12.2 support); 0.16.x → MC 1.21.4+; 0.15.x → 1.20.x
+    - Forge: version-specific (e.g., 14.23.x → 1.12.2; 47.x → 1.20.1; 52.x → 1.21.4)
+    - NeoForge: 1.20.1+ only; 21.4.x → MC 1.21.4
+    - Quilt: mirrors Fabric version support
+    - LiteLoader: 1.7.10–1.12.2 only (1.12.x → MC 1.12.2)
+- [ANALYSIS] Aprism Loader native interface usage assessment:
+  * Current ExtensionContext API surface is SUFFICIENT and elegantly minimal:
+    registerLoaderSupport(loaderKey, modFolder) + event bus/registry/logger access.
+  * All complex logic (FabricEntrypointBridge, NeoForgeEntrypointBridge reflection,
+    manifest parsing, classloading) lives correctly in Aprism aprism-loader-core.
+  * Extension .aep artifacts remain lightweight (few KB) with single-purpose design.
+  * Entrypoint bridge architecture verified functional:
+    - Fabric: reflectively invokes onInitialize/onInitializeClient/onInitializeServer
+    - NeoForge/Forge: @Mod annotation discovery + IEventBus constructor injection
+    - LiteLoader: LiteMod interface detection + init(File) invocation
+  * No additional ExtensionContext methods required for current architecture.
+- [DECISION] v26.0-Alpha.2 release focus: MC-version-specific extension variants
+  with explicit loader version mapping.
+- [PLAN] Alpha.2 implementation tasks:
+  1. Fix forge branch manifest (loaderKey:"Fo", modFolder:"forge-mods/").
+  2. Create MC-version-specific .aep variants per loader with precise loaderRange
+     and mcVersion declarations (not null).
+  3. Document version compatibility matrix (MC version → loader versions → .aep file).
+  4. Update artifact naming convention to include MC version:
+     <Loader>-Support-A[<aprismVer>)-<LoaderKey>[<loaderVer>)-JE-<mcVer>.aep
+     Example: Fabric-Support-A[26.0,27.0)-Fa[0.16,0.17)-JE-1.21.4.aep
+  5. Update build.gradle and release.yml to generate multiple artifacts per branch.
+  6. Rebuild and E2E-verify all variants against corresponding MC + loader versions.
 
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
