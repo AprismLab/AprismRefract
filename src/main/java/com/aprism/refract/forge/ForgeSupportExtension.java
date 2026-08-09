@@ -5,15 +5,18 @@ import com.aprism.api.IAprismExtension;
 
 /**
  * Forge-Support Aprism Extension entrypoint (loader-support, loader key
- * {@code Fo}). Registers the {@code forge-mods/} folder so that Aprism scans
- * it for genuine Forge mods.
+ * {@code Fo}). Registers the {@code forge-mods/} folder so that Aprism
+ * scans it for genuine Forge mods, and registers the Forge entrypoint handler
+ * that owns Forge-convention dispatch.
  *
  * <p>This class is bundled in the Forge-Support {@code .aep} and its
  * {@link #onInitialize(ExtensionContext)} is invoked by the Aprism runtime
- * during phase 1 (before any mods are scanned). The Forge runtime bridge
- * ({@code ForgeEntrypointBridge} + Forge API shim) lives in Aprism's
- * {@code aprism-loader-core}; this extension only declares the loader-support
- * folder.
+ * during phase 1 (before any mods are scanned). Since v26.0-Alpha.2 the Forge
+ * translation layer ({@link ForgeEntrypointBridge} + {@link ForgeEventBus} +
+ * the {@code net.minecraftforge.*} shims) lives on this branch — not in the
+ * Aprism core — and is supplied to the runtime through the
+ * {@code LoaderEntrypointHandler} SPI seam via
+ * {@link ExtensionContext#registerEntrypointHandler}.
  *
  * <p>Per FACT.md 9.14 the loader key {@code Fo} is reserved for Forge.
  *
@@ -30,8 +33,11 @@ public final class ForgeSupportExtension implements IAprismExtension {
     @Override
     public void onInitialize(ExtensionContext context) {
         context.registerLoaderSupport(FORGE_KEY, FORGE_MODS_FOLDER);
+        // Own the Forge entrypoint dispatch: the core delegates to this
+        // handler for every mod discovered under loader key "Fo".
+        context.registerEntrypointHandler(FORGE_KEY, new ForgeEntrypointHandler());
         context.getLogger().info("Forge-Support registered: scanning "
                 + FORGE_MODS_FOLDER + "/ for Forge mods (loader key "
-                + FORGE_KEY + ")");
+                + FORGE_KEY + "), entrypoint dispatch owned by this extension");
     }
 }

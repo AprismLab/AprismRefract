@@ -37,6 +37,35 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-10 (forge, v26.0-Alpha.2) - Forge translation layer extraction
+- [DONE] Extracted the Forge translation layer from the Aprism core into
+  this branch, per the loader-support extraction architecture (Aprism
+  v26.1-Alpha.6 seam; extraction-architecture.md on main):
+  - Migrated ForgeEntrypointBridge (ASM @Mod bytecode scan + IEventBus
+    constructor injection) into com.aprism.refract.forge.
+  - Migrated ForgeEventBus (branch-backed IEventBus implementation).
+  - Bundled the Forge API shims (net.minecraftforge.fml.common.Mod,
+    net.minecraftforge.eventbus.api.IEventBus) in this branch.
+  - Added ForgeEntrypointHandler implements LoaderEntrypointHandler: owns
+    Forge dispatch (INIT-only construction, idempotent re-INIT, other
+    phases no-op, instance retained on container).
+  - ForgeSupportExtension now registers the handler via
+    context.registerEntrypointHandler("Fo", handler) - exclusive, so the core
+    never runs any Forge-specific code for loader key Fo.
+- [DONE] Compile alignment bumped to the v26.1-Alpha.8 triple (api +
+  loader-core + manifest jars, compileOnly). ASM is compileOnly (the Aprism
+  agent ships it un-relocated; the test suite adds the real dependency).
+  Branch-local test suite runs the real Aprism runtime without any change to
+  the Aprism repository.
+- [DONE] Tests: 11 green (ForgeEntrypointBridgeTest 4,
+  ForgeEntrypointHandlerTest 5, ForgeExtractionE2ETest 2, 0 skipped).
+  The E2E asserts the registered handler is DEFINED BY the AprismClassLoader
+  (loaded from the .aep's embedded jar) - the decisive proof the extraction,
+  not any core fallback, owns Forge dispatch.
+- [NOTE] The Aprism core still ships its built-in Forge bridge as a
+  transition fallback (removal lands after all five loaders are extracted).
+- Version bumped to v26.0-Alpha.2.
+
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
   loader-support extension SDK conventions (lifecycle, what lives in Aprism core
