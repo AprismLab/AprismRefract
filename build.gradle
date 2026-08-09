@@ -29,7 +29,13 @@ group = 'com.aprism.refract'
 version = 'v26.0-Alpha.2'
 
 // The Aprism build this extension aligns with (compile-time API surface).
-def aprismAlignVersion = 'v26.1-Alpha.8'
+// Resolved dynamically from the Aprism workspace's gradle.properties so the
+// branch stays in sync with whatever Aprism version is currently checked out
+// (locally and in CI), instead of hardcoding a version that drifts whenever
+// Aprism bumps.
+def aprismProps = new Properties()
+file('../Aprism/gradle.properties').withInputStream { aprismProps.load(it) }
+def aprismAlignVersion = aprismProps.getProperty('aprismVersion').trim()
 def aprismLibs = "../Aprism/aprism-api/build/libs"
 def loaderCoreLibs = "../Aprism/aprism-loader-core/build/libs"
 def manifestLibs = "../Aprism/aprism-manifest/build/libs"
