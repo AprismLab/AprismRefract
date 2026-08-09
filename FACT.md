@@ -37,6 +37,35 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-10 (quilt, v26.0-Alpha.2) - Quilt translation layer extraction
+- [DONE] Extracted the Quilt translation layer from the Aprism core into
+  this branch, per the loader-support extraction architecture (Aprism
+  v26.1-Alpha.6 seam; extraction-architecture.md on main):
+  - Migrated QuiltEntrypointBridge (reflective Fabric-convention invocation;
+    Quilt's built-in Fabric compatibility layer means Quilt mods implement
+    net.fabricmc.api.ModInitializer and its variants) into
+    com.aprism.refract.quilt.
+  - Bundled the Fabric API shims (net.fabricmc.api.ModInitializer /
+    ClientModInitializer / DedicatedServerModInitializer) in this branch.
+  - Added QuiltEntrypointHandler implements LoaderEntrypointHandler: owns
+    Quilt dispatch (manifest-driven entrypoints with the quilt.mod.json init
+    key projected to main, IAprismMod native path preserved,
+    per-entrypoint isolation, instance retained on container).
+  - QuiltSupportExtension now registers the handler via
+    context.registerEntrypointHandler("Q", handler) - exclusive, so the core
+    never runs any Quilt-specific code for loader key Q.
+- [DONE] Compile alignment bumped to the v26.1-Alpha.8 triple (api +
+  loader-core + manifest jars, compileOnly). Branch-local test suite runs
+  the real Aprism runtime without any change to the Aprism repository.
+- [DONE] Tests: 13 green (QuiltEntrypointBridgeTest 5,
+  QuiltEntrypointHandlerTest 6, QuiltExtractionE2ETest 2, 0 skipped).
+  The E2E asserts the registered handler is DEFINED BY the AprismClassLoader
+  (loaded from the .aep's embedded jar) - the decisive proof the extraction,
+  not any core fallback, owns Quilt dispatch.
+- [NOTE] The Aprism core still ships its built-in Quilt dispatch as a
+  transition fallback (removal lands after all five loaders are extracted).
+- Version bumped to v26.0-Alpha.2.
+
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
   loader-support extension SDK conventions (lifecycle, what lives in Aprism core
