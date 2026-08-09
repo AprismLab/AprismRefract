@@ -37,6 +37,35 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-10 (neoforge, v26.0-Alpha.2) - NeoForge translation layer extraction
+- [DONE] Extracted the NeoForge translation layer from the Aprism core into
+  this branch, per the loader-support extraction architecture (Aprism
+  v26.1-Alpha.6 seam; extraction-architecture.md on main):
+  - Migrated NeoForgeEntrypointBridge (ASM @Mod bytecode scan + IEventBus
+    constructor injection) into com.aprism.refract.neoforge.
+  - Migrated NeoForgeEventBus (branch-backed IEventBus implementation).
+  - Bundled the NeoForge API shims (net.neoforged.fml.common.Mod,
+    net.neoforged.bus.api.IEventBus) in this branch.
+  - Added NeoForgeEntrypointHandler implements LoaderEntrypointHandler: owns
+    NeoForge dispatch (INIT-only construction, idempotent re-INIT, other
+    phases no-op, instance retained on container).
+  - NeoForgeSupportExtension now registers the handler via
+    context.registerEntrypointHandler("N", handler) - exclusive, so the core
+    never runs any NeoForge-specific code for loader key N.
+- [DONE] Compile alignment bumped to the v26.1-Alpha.8 triple (api +
+  loader-core + manifest jars, compileOnly). ASM is compileOnly (the Aprism
+  agent ships it un-relocated; the test suite adds the real dependency).
+  Branch-local test suite runs the real Aprism runtime without any change to
+  the Aprism repository.
+- [DONE] Tests: 11 green (NeoForgeEntrypointBridgeTest 4,
+  NeoForgeEntrypointHandlerTest 5, NeoForgeExtractionE2ETest 2, 0 skipped).
+  The E2E asserts the registered handler is DEFINED BY the AprismClassLoader
+  (loaded from the .aep's embedded jar) - the decisive proof the extraction,
+  not any core fallback, owns NeoForge dispatch.
+- [NOTE] The Aprism core still ships its built-in NeoForge bridge as a
+  transition fallback (removal lands after all five loaders are extracted).
+- Version bumped to v26.0-Alpha.2.
+
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
   loader-support extension SDK conventions (lifecycle, what lives in Aprism core
