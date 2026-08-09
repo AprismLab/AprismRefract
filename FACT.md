@@ -37,6 +37,35 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-10 (liteloader, v26.0-Alpha.2) - LiteLoader translation layer extraction
+- [DONE] Extracted the LiteLoader translation layer from the Aprism core into
+  this branch, per the loader-support extraction architecture (Aprism
+  v26.1-Alpha.6 seam; extraction-architecture.md on main):
+  - Migrated LiteLoaderEntrypointBridge (ASM LiteMod interface/namespace scan
+    + init(File) reflective invocation) into com.aprism.refract.liteloader.
+  - Bundled the LiteLoader API shim (com.mumfrey.liteloader.core.LiteMod) in
+    this branch.
+  - Added LiteLoaderEntrypointHandler implements LoaderEntrypointHandler: owns
+    LiteLoader dispatch (INIT-only construction + init(File) with the
+    <gameRoot>/config/<modId> folder derived from the mod source path,
+    idempotent re-INIT, other phases no-op).
+  - LiteLoaderSupportExtension now registers the handler via
+    context.registerEntrypointHandler("L", handler) - exclusive, so the core
+    never runs any LiteLoader-specific code for loader key L.
+- [DONE] Compile alignment bumped to the v26.1-Alpha.8 triple (api +
+  loader-core + manifest jars, compileOnly). ASM is compileOnly (the Aprism
+  agent ships it un-relocated; the test suite adds the real dependency).
+  Branch-local test suite runs the real Aprism runtime without any change to
+  the Aprism repository.
+- [DONE] Tests: 10 green (LiteLoaderEntrypointBridgeTest 3,
+  LiteLoaderEntrypointHandlerTest 5, LiteLoaderExtractionE2ETest 2, 0 skipped).
+  The E2E asserts the registered handler is DEFINED BY the AprismClassLoader
+  (loaded from the .aep's embedded jar) - the decisive proof the extraction,
+  not any core fallback, owns LiteLoader dispatch.
+- [NOTE] The Aprism core still ships its built-in LiteLoader bridge as a
+  transition fallback (removal lands after all five loaders are extracted).
+- Version bumped to v26.0-Alpha.2.
+
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
   loader-support extension SDK conventions (lifecycle, what lives in Aprism core

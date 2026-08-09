@@ -2,20 +2,41 @@
 // Loader-support extension (loader key "L") that lets Aprism Loader scan
 // liteloader-mods/ and load genuine .litemod mods.
 //
-// The extension is self-contained on this branch: it compiles against the
-// Aprism API jar only (compileOnly) and defines its own loader-key constants.
-// The LiteLoader runtime bridge (LiteMod interface bytecode scan + init(File)
-// invocation, LiteMod shim interface) lives in Aprism's aprism-loader-core;
-// this project provides the extension entrypoint that registers the
-// loader-support folder and is packaged into the .aep.
+// Since v26.0-Alpha.2 the extension is fully self-contained on this branch:
+// it ships its OWN LiteLoader translation layer (LiteLoaderEntrypointBridge +
+// the com.mumfrey.liteloader.core.LiteMod shim) and registers a
+// LoaderEntrypointHandler through the extraction seam. The Aprism core no
+// longer carries LiteLoader-specific dispatch; it supplies only the seam
+// (com.aprism.loader.loaderext) and the Aprism-native fallback.
+//
+// The loader-core and manifest jars are compileOnly: the handler needs their
+// types (LoaderEntrypointHandler, LoadedModContainer) at compile time, but
+// Aprism provides them at load time. ASM is compileOnly because the Aprism
+// agent ships it un-relocated (org.objectweb.asm) so the bridge's ASM scan
+// resolves against the agent's copy at runtime; the test suite pulls the real
+// ASM dependency to exercise the scan standalone.
 
 plugins {
     id 'java'
     id 'com.aprism.packaging'
 }
 
+// Project-level repositories. Declared here because a machine-wide Gradle
+// init script injects mavenLocal() into every project, which makes Gradle
+// ignore the settings-level dependencyResolutionManagement repositories.
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
 group = 'com.aprism.refract'
-version = 'v26.0-Alpha.1'
+version = 'v26.0-Alpha.2'
+
+// The Aprism build this extension aligns with (compile-time API surface).
+def aprismAlignVersion = 'v26.1-Alpha.8'
+def aprismLibs = "../Aprism/aprism-api/build/libs"
+def loaderCoreLibs = "../Aprism/aprism-loader-core/build/libs"
+def manifestLibs = "../Aprism/aprism-manifest/build/libs"
 
 java {
     toolchain {
@@ -23,11 +44,31 @@ java {
     }
 }
 
-// Compile against the Aprism API jar built from the Aprism workspace.
-// compileOnly: the API is provided by the Aprism runtime at load time, so the
-// extension jar must not bundle it.
 dependencies {
-    compileOnly files('../Aprism/aprism-api/build/libs/aprism-api-v26.0-Alpha.8.jar')
+    // compileOnly: provided by the Aprism runtime at load time, so the
+    // extension jar must not bundle any of these.
+    compileOnly files("${aprismLibs}/aprism-api-${aprismAlignVersion}.jar")
+    compileOnly files("${loaderCoreLibs}/aprism-loader-core-${aprismAlignVersion}.jar")
+    compileOnly files("${manifestLibs}/aprism-manifest-${aprismAlignVersion}.jar")
+
+    // ASM is used by the LiteMod bytecode scan. compileOnly: the Aprism
+    // agent ships ASM un-relocated (org.objectweb.asm), so the bridge resolves
+    // against it at runtime. The test suite adds the real dependency below.
+    compileOnly 'org.ow2.asm:asm:9.9'
+
+    // Branch-local test suite: runs the real Aprism runtime against the
+    // built .aep so this branch verifies its own extraction end to end
+    // without requiring any change in the Aprism repository.
+    testImplementation files("${aprismLibs}/aprism-api-${aprismAlignVersion}.jar")
+    testImplementation files("${loaderCoreLibs}/aprism-loader-core-${aprismAlignVersion}.jar")
+    testImplementation files("${manifestLibs}/aprism-manifest-${aprismAlignVersion}.jar")
+    // loader-core runtime dependencies (Mixin bootstrap + gson + ASM)
+    testImplementation 'net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7'
+    testImplementation 'com.google.code.gson:gson:2.13.1'
+    testImplementation 'org.ow2.asm:asm:9.9'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testImplementation 'org.assertj:assertj-core:3.27.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 jar {
@@ -35,6 +76,10 @@ jar {
         attributes 'Implementation-Title': 'AprismRefract LiteLoader-Support',
                    'Implementation-Version': project.version
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 // The Aprism packaging plugin registers packageAep. We configure it to bundle
