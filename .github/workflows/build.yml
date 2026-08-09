@@ -33,9 +33,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Aprism API jar
+      - name: Build Aprism jars (api + loader-core + manifest)
         working-directory: Aprism
-        run: ./gradlew :aprism-api:jar --console=plain
+        run: ./gradlew :aprism-api:jar :aprism-loader-core:jar :aprism-manifest:jar --console=plain
 
       - name: Build extension + package .aep
         working-directory: AprismRefract
