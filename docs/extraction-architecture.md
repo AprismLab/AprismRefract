@@ -79,11 +79,11 @@ contract, the registry, and the Aprism-native fallback.
 
 | Loader | Branch | Handler in Refract | Shim in Refract |
 |---|---|---|---|
-| Fabric | `fabric` | planned | planned |
-| NeoForge | `neoforge` | planned | planned |
-| Forge | `forge` | planned | planned |
-| Quilt | `quilt` | planned | planned |
-| LiteLoader | `liteloader` | planned | planned |
+| Fabric | `fabric` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
+| NeoForge | `neoforge` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
+| Forge | `forge` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
+| Quilt | `quilt` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
+| LiteLoader | `liteloader` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
 
 During the transition the core still ships built-in bridges as a fallback so
 existing behaviour is preserved; once a branch's handler is registered it takes

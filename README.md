@@ -109,12 +109,17 @@ settings.gradle). Signed commits + signed tags are mandatory
 ## Relationship to Aprism
 
 - Aprism core (agent, classloader, runtime, Mixin, remap, packaging) stays in
-  the Aprism repository. This includes the entrypoint bridges
-  (`FabricEntrypointBridge`, `NeoForgeEntrypointBridge`, ...) and the loader
-  API shim interfaces (`net.fabricmc.api.*`, `net.neoforged.fml.common.Mod`,
-  ...) which live in Aprism's `aprism-loader-core`.
-- This repository contains only the `.aep` entrypoint class + manifest for each
-  loader. See [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
-  for the normative split between Aprism core and loader branches.
+  the Aprism repository. Since the loader-support extraction (Aprism
+  v26.1-Alpha.6 seam, completed at AprismRefract v26.0-Alpha.2) the core ships
+  only the `LoaderEntrypointHandler` SPI + registry and the Aprism-native
+  fallback; it no longer carries any loader-specific translation.
+- Each loader branch here supplies its OWN translation layer: the entrypoint
+  bridge, the loader API shim interfaces (`net.fabricmc.api.*`,
+  `net.neoforged.fml.common.Mod`, `net.minecraftforge.fml.common.Mod`,
+  `com.mumfrey.liteloader.core.LiteMod`), the `LoaderEntrypointHandler`
+  implementation, and the `.aep` packaging. See
+  [docs/extraction-architecture.md](docs/extraction-architecture.md) for the
+  seam design and [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
+  for the normative split.
 - Version alignment: an AprismRefract `v26.0-Alpha.<n>` is built against the
   matching Aprism `v26.0-Alpha.<n>` API surface.
