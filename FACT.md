@@ -37,6 +37,33 @@ One loader per branch; `main` holds only shared skeleton/docs.
 
 ## 4. Session Log
 
+### Session 2026-08-10 (fabric, v26.0-Alpha.2) - Fabric translation layer extraction
+- [DONE] Extracted the Fabric translation layer from the Aprism core into
+  this branch, per the loader-support extraction architecture (Aprism
+  v26.1-Alpha.6 seam; extraction-architecture.md on main):
+  - Migrated FabricEntrypointBridge (reflective Fabric-convention invocation)
+    into com.aprism.refract.fabric.
+  - Bundled the Fabric API shims (net.fabricmc.api.ModInitializer /
+    ClientModInitializer / DedicatedServerModInitializer) in this branch.
+  - Added FabricEntrypointHandler implements LoaderEntrypointHandler: owns
+    Fabric entrypoint dispatch (manifest-driven entrypoints, IAprismMod native
+    path preserved, per-entrypoint isolation, instance retained on container).
+  - FabricSupportExtension now registers the handler via
+    context.registerEntrypointHandler("Fa", handler) - exclusive, so the core
+    never runs any Fabric-specific code for loader key Fa.
+- [DONE] Compile alignment bumped from aprism-api-v26.0-Alpha.8.jar to the
+  v26.1-Alpha.8 triple (api + loader-core + manifest jars, compileOnly);
+  branch-local test suite runs the real Aprism runtime (Mixin + gson as
+  test dependencies) without any change to the Aprism repository.
+- [DONE] Tests: 13 green (FabricEntrypointBridgeTest 5, FabricEntrypointHandlerTest
+  6, FabricExtractionE2ETest 2, 0 skipped). The E2E asserts the registered
+  handler is DEFINED BY the AprismClassLoader (loaded from the .aep's embedded
+  jar) - the decisive proof the extraction, not any core fallback, owns Fabric
+  dispatch.
+- [NOTE] The Aprism core still ships its built-in Fabric bridge as a
+  transition fallback (removal lands after all five loaders are extracted).
+- Version bumped to v26.0-Alpha.2.
+
 ### Session 2026-08-09 (shared docs)
 - [DONE] Created docs/extension-sdk-conventions.md on main: the normative
   loader-support extension SDK conventions (lifecycle, what lives in Aprism core
