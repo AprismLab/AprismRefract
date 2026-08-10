@@ -85,6 +85,10 @@ contract, the registry, and the Aprism-native fallback.
 | Quilt | `quilt` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
 | LiteLoader | `liteloader` | done (v26.0-Alpha.2) | done (v26.0-Alpha.2) |
 
-During the transition the core still ships built-in bridges as a fallback so
-existing behaviour is preserved; once a branch's handler is registered it takes
-precedence via the exclusive path.
+As of Aprism v26.2-Alpha.5 (goal #4 close, 2026-08-10) the transition is
+COMPLETE: the transitional built-in bridges and built-in loader-support
+extensions were removed from aprism-loader-core, and the foreign-loader shim
+types left the production jar. The `LoaderEntrypointHandler` SPI is now the
+ONLY foreign-loader dispatch path; each branch's `.aep` is required for its
+loader to dispatch. Aprism's cross-repo E2E tests (Refract*AepE2ETest) run
+the five branch-built `.aep` archives against the real runtime and all pass.
