@@ -30,7 +30,7 @@ class FabricEntrypointHandlerTest {
     @BeforeEach
     void setUp() {
         FabricRecordingMod.resetGlobal();
-        handler = new FabricEntrypointHandler(null, null);
+        handler = new FabricEntrypointHandler(null, null, null);
     }
 
     private static LoadedModContainer container(Map<String, List<String>> entrypoints) {

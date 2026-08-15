@@ -36,7 +36,7 @@ public final class FabricSupportExtension implements IAprismExtension {
         // Own the Fabric entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Fa".
         context.registerEntrypointHandler(FABRIC_KEY,
-                new FabricEntrypointHandler(context.getEventBus(), context.getRegistry()));
+                new FabricEntrypointHandler(context.getEventBus(), context.getRegistry(), null));
         context.getLogger().info("Fabric-Support registered: scanning "
                 + FABRIC_MODS_FOLDER + "/ for Fabric mods (loader key "
                 + FABRIC_KEY + "), entrypoint dispatch owned by this extension");
