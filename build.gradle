@@ -27,7 +27,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.5-Alpha.1'
+version = 'v26.5-Alpha.2'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
@@ -85,9 +85,65 @@ aprismPackaging {
     outputDir = 'build/aprism'
 }
 
+// MC-version-specific .aep variants (v26.5-Alpha.2).
+// Each variant produces a separate .aep with a precise mcVersion and loaderRange.
+// Fabric supports MC 1.14+ only; the variants below cover the Aprism target line.
+def fabricVariants = [
+    [mcVersion: '26.1.2',   loaderRange: '[0.16.0,0.17.0)', mcLabel: '26.1.2'],
+    [mcVersion: '1.21.10',  loaderRange: '[0.16.0,0.17.0)', mcLabel: '1.21.10'],
+    [mcVersion: '1.21.4',   loaderRange: '[0.16.0,0.17.0)', mcLabel: '1.21.4'],
+    [mcVersion: '1.20.6',   loaderRange: '[0.15.0,0.16.0)', mcLabel: '1.20.6'],
+    [mcVersion: '1.20.1',   loaderRange: '[0.15.0,0.16.0)', mcLabel: '1.20.1'],
+    [mcVersion: '1.16.5',   loaderRange: '[0.14.0,0.15.0)', mcLabel: '1.16.5'],
+]
+
+fabricVariants.eachWithIndex { variant, idx ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def aepName = "Fabric-Support-A[26.0,28.0)-Fa${variant.loaderRange}-JE-${variant.mcLabel}.aep"
+
+    tasks.register("packageAep${variant.mcLabel.replace('.', '_')}", com.aprism.packaging.PackageAepTask) {
+        dependsOn jar
+        inputJars = files(jar.archiveFile)
+        manifestFile = genManifest
+        outputFile = file("build/aprism/${aepName}")
+    }
+}
+
+// Default packageAep produces the MC 26.2 variant (the primary target).
+// The default aprism.extension.json at repo root is the MC 26.2 manifest.
 packageAep {
     dependsOn jar
     inputJars = files(jar.archiveFile)
     manifestFile = file('aprism.extension.json')
-    outputFile = file("build/aprism/Fabric-Support-A[26.0,27.0)-Fa[0.16,0.17)-JE-26.2.aep")
+    outputFile = file("build/aprism/Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.17.0)-JE-26.2.aep")
+}
+
+// Aggregate task to generate all variant manifests and package all .aep files.
+tasks.register('packageAllAeps') {
+    dependsOn tasks.withType(com.aprism.packaging.PackageAepTask)
+}
+
+// Generate variant manifests before the variant packageAep tasks run.
+fabricVariants.each { variant ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def taskName = "packageAep${variant.mcLabel.replace('.', '_')}"
+    tasks.named(taskName) {
+        doFirst {
+            genDir.mkdirs()
+            genManifest.text = """{
+  "extensionId": "fabric-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,28.0.0)",
+  "loaderKey": "Fa",
+  "loaderRange": "${variant.loaderRange}",
+  "mcEdit": "JE",
+  "mcVersion": "${variant.mcVersion}",
+  "entrypoint": "com.aprism.refract.fabric.FabricSupportExtension",
+  "provides": ["fabric-loader"],
+  "depends": {}
+}"""
+        }
+    }
 }
