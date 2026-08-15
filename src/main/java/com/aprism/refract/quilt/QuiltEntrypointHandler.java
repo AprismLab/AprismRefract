@@ -8,6 +8,7 @@ import com.aprism.api.AprismEventBus;
 import com.aprism.api.AprismPhase;
 import com.aprism.api.AprismRegistry;
 import com.aprism.api.IAprismMod;
+import com.aprism.api.imc.InterModComms;
 import com.aprism.loader.AprismContextImpl;
 import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointHandler;
@@ -59,14 +60,19 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
     private final AprismEventBus eventBus;
     /** Shared registry handed in at registration (may be {@code null}). */
     private final AprismRegistry registry;
+    /** Shared inter-mod comms surface (may be {@code null}). */
+    private final InterModComms interModComms;
 
     /**
-     * @param eventBus the shared Aprism event bus (or {@code null})
-     * @param registry the shared Aprism registry (or {@code null})
+     * @param eventBus      the shared Aprism event bus (or {@code null})
+     * @param registry      the shared Aprism registry (or {@code null})
+     * @param interModComms the shared inter-mod comms surface (or {@code null})
      */
-    public QuiltEntrypointHandler(AprismEventBus eventBus, AprismRegistry registry) {
+    public QuiltEntrypointHandler(AprismEventBus eventBus, AprismRegistry registry,
+                                  InterModComms interModComms) {
         this.eventBus = eventBus;
         this.registry = registry;
+        this.interModComms = interModComms;
     }
 
     @Override
@@ -162,7 +168,7 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
      * @param phase     the lifecycle phase
      */
     private void invokePhaseMethod(IAprismMod mod, LoadedModContainer container, AprismPhase phase) {
-        AprismContext context = new AprismContextImpl(container, eventBus, registry);
+        AprismContext context = new AprismContextImpl(container, eventBus, registry, interModComms);
         switch (phase) {
             case PREINIT -> mod.onPreInitialize(context);
             case INIT -> mod.onInitialize(context);

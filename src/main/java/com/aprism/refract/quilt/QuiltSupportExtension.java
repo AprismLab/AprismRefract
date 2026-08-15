@@ -37,7 +37,7 @@ public final class QuiltSupportExtension implements IAprismExtension {
         // Own the Quilt entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Q".
         context.registerEntrypointHandler(QUILT_KEY,
-                new QuiltEntrypointHandler(context.getEventBus(), context.getRegistry()));
+                new QuiltEntrypointHandler(context.getEventBus(), context.getRegistry(), null));
         context.getLogger().info("Quilt-Support registered: scanning "
                 + QUILT_MODS_FOLDER + "/ for Quilt mods (loader key "
                 + QUILT_KEY + "), entrypoint dispatch owned by this extension");

@@ -32,7 +32,7 @@ class QuiltEntrypointHandlerTest {
     @BeforeEach
     void setUp() {
         QuiltRecordingMod.resetGlobal();
-        handler = new QuiltEntrypointHandler(null, null);
+        handler = new QuiltEntrypointHandler(null, null, null);
     }
 
     private static LoadedModContainer container(Map<String, List<String>> entrypoints) {
