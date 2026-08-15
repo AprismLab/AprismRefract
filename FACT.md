@@ -110,6 +110,33 @@ LiteLoader:
 
 ## 5. Session Log
 
+### Session 2026-08-09/10 (all branches, v26.0-Alpha.2) - Loader-support extraction complete + release
+- [DONE] Completed the loader-support extraction: the five foreign-loader
+  translation layers (bridges + API shims) were moved OUT of the Aprism core
+  and into their own AprismRefract branches. The core now ships only the
+  LoaderEntrypointHandler SPI seam + registry + Aprism-native fallback; it no
+  longer carries any loader-specific translation, so each loader's translation
+  can be adapted to that loader's versions independently of the core.
+- [DONE] Per branch (fabric/neoforge/forge/quilt/liteloader): migrated the
+  entrypoint bridge + bundled the loader API shims + added a
+  LoaderEntrypointHandler implementation registered exclusively via
+  context.registerEntrypointHandler(...) in the SupportExtension.
+- [DONE] Branches compile against the Aprism workspace jars with the
+  alignment version resolved dynamically from ../Aprism/gradle.properties
+  (no hardcoded drift). CI now builds all three Aprism jars
+  (api + loader-core + manifest) since branches compile against the seam.
+- [DONE] Verification: Aprism full suite 352 tests / 0 failures; the five
+  cross-repo RefractAepE2ETests all run (skipped=0) and pass, each asserting
+  the registered handler is DEFINED BY the AprismClassLoader (loaded from the
+  .aep's embedded jar) - proof the extraction, not a core fallback, owns dispatch.
+- [DONE] Docs: extraction-architecture.md migration table marked done for all
+  five loaders; README relationship section corrected to reflect the seam.
+- [DONE] Released v26.0-Alpha.2: five SSH-signed tags pushed; five signed
+  Pre-Releases published (fabric/neoforge/forge/quilt/liteloader), each with
+  the .aep, SHA-256 checksums.txt, cosign keyless .sig/.bundle, and CycloneDX
+  SBOM. Downloaded the forge artifact and verified its SHA-256 against
+  checksums.txt: MATCH.
+
 ### Session 2026-08-09 (v26.0-Alpha.1 release)
 - [DONE] Merged main (docs + CI workflows) into all five loader branches;
   resolved status-table merge conflicts by adopting main's all-developed table.
