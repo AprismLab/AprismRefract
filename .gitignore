@@ -48,3 +48,7 @@ aprism-libs/
 
 # Session archives (local only, not distributed)
 .qwen-agent-sessions/
+.cherry_migration/
+
+# Project tracking (local only, not distributed)
+FACT.md
