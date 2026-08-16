@@ -26,7 +26,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.5-Alpha.1'
+version = 'v26.5-Alpha.2'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
@@ -84,9 +84,60 @@ aprismPackaging {
     outputDir = 'build/aprism'
 }
 
+// MC-version-specific .aep variants (v26.5-Alpha.2).
+// Quilt mirrors Fabric version support: MC 1.14+ only.
+def quiltVariants = [
+    [mcVersion: '26.1.2',   loaderRange: '[0.29.0,0.30.0)', mcLabel: '26.1.2'],
+    [mcVersion: '1.21.10',  loaderRange: '[0.29.0,0.30.0)', mcLabel: '1.21.10'],
+    [mcVersion: '1.21.4',   loaderRange: '[0.29.0,0.30.0)', mcLabel: '1.21.4'],
+    [mcVersion: '1.20.6',   loaderRange: '[0.26.0,0.27.0)', mcLabel: '1.20.6'],
+    [mcVersion: '1.20.1',   loaderRange: '[0.26.0,0.27.0)', mcLabel: '1.20.1'],
+    [mcVersion: '1.16.5',   loaderRange: '[0.26.0,0.27.0)', mcLabel: '1.16.5'],
+]
+
+quiltVariants.eachWithIndex { variant, idx ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def aepName = "Quilt-Support-A[26.0,28.0)-Q${variant.loaderRange}-JE-${variant.mcLabel}.aep"
+
+    tasks.register("packageAep${variant.mcLabel.replace('.', '_')}", com.aprism.packaging.PackageAepTask) {
+        dependsOn jar
+        inputJars = files(jar.archiveFile)
+        manifestFile = genManifest
+        outputFile = file("build/aprism/${aepName}")
+    }
+}
+
 packageAep {
     dependsOn jar
     inputJars = files(jar.archiveFile)
     manifestFile = file('aprism.extension.json')
-    outputFile = file("build/aprism/Quilt-Support-A[26.0,27.0)-Q[0.29,0.30)-JE-26.2.aep")
+    outputFile = file("build/aprism/Quilt-Support-A[26.0,28.0)-Q[0.29.0,0.30.0)-JE-26.2.aep")
+}
+
+tasks.register('packageAllAeps') {
+    dependsOn tasks.withType(com.aprism.packaging.PackageAepTask)
+}
+
+quiltVariants.each { variant ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def taskName = "packageAep${variant.mcLabel.replace('.', '_')}"
+    tasks.named(taskName) {
+        doFirst {
+            genDir.mkdirs()
+            genManifest.text = """{
+  "extensionId": "quilt-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,28.0.0)",
+  "loaderKey": "Q",
+  "loaderRange": "${variant.loaderRange}",
+  "mcEdit": "JE",
+  "mcVersion": "${variant.mcVersion}",
+  "entrypoint": "com.aprism.refract.quilt.QuiltSupportExtension",
+  "provides": ["quilt-loader"],
+  "depends": {}
+}"""
+        }
+    }
 }
