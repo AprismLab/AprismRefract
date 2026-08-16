@@ -30,7 +30,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.5-Alpha.1'
+version = 'v26.5-Alpha.2'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
@@ -94,9 +94,63 @@ aprismPackaging {
     outputDir = 'build/aprism'
 }
 
+// MC-version-specific .aep variants (v26.5-Alpha.2).
+// Each variant produces a separate .aep with a precise mcVersion and loaderRange.
+// NeoForge forked from Forge at MC 1.20.1; it supports 1.20.1+ only.
+def neoforgeVariants = [
+    [mcVersion: '26.1.2',   loaderRange: '[21.4.0,21.5.0)', mcLabel: '26.1.2'],
+    [mcVersion: '1.21.10',  loaderRange: '[21.4.0,21.5.0)', mcLabel: '1.21.10'],
+    [mcVersion: '1.21.4',   loaderRange: '[21.4.0,21.5.0)', mcLabel: '1.21.4'],
+    [mcVersion: '1.20.6',   loaderRange: '[21.0.0,21.1.0)', mcLabel: '1.20.6'],
+    [mcVersion: '1.20.1',   loaderRange: '[21.0.0,21.1.0)', mcLabel: '1.20.1'],
+]
+
+neoforgeVariants.eachWithIndex { variant, idx ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def aepName = "NeoForge-Support-A[26.0,28.0)-N${variant.loaderRange}-JE-${variant.mcLabel}.aep"
+
+    tasks.register("packageAep${variant.mcLabel.replace('.', '_')}", com.aprism.packaging.PackageAepTask) {
+        dependsOn jar
+        inputJars = files(jar.archiveFile)
+        manifestFile = genManifest
+        outputFile = file("build/aprism/${aepName}")
+    }
+}
+
+// Default packageAep produces the MC 26.2 variant (the primary target).
 packageAep {
     dependsOn jar
     inputJars = files(jar.archiveFile)
     manifestFile = file('aprism.extension.json')
-    outputFile = file("build/aprism/NeoForge-Support-A[26.0,27.0)-N[21.4,21.5)-JE-26.2.aep")
+    outputFile = file("build/aprism/NeoForge-Support-A[26.0,28.0)-N[21.4.0,21.5.0)-JE-26.2.aep")
+}
+
+// Aggregate task to generate all variant manifests and package all .aep files.
+tasks.register('packageAllAeps') {
+    dependsOn tasks.withType(com.aprism.packaging.PackageAepTask)
+}
+
+// Generate variant manifests before the variant packageAep tasks run.
+neoforgeVariants.each { variant ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def taskName = "packageAep${variant.mcLabel.replace('.', '_')}"
+    tasks.named(taskName) {
+        doFirst {
+            genDir.mkdirs()
+            genManifest.text = """{
+  "extensionId": "neoforge-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,28.0.0)",
+  "loaderKey": "N",
+  "loaderRange": "${variant.loaderRange}",
+  "mcEdit": "JE",
+  "mcVersion": "${variant.mcVersion}",
+  "entrypoint": "com.aprism.refract.neoforge.NeoForgeSupportExtension",
+  "provides": ["neoforge-loader"],
+  "depends": {}
+}"""
+        }
+    }
 }
