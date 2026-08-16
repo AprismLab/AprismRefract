@@ -4,8 +4,8 @@
   "aprismRange": "[26.0.0,28.0.0)",
   "loaderKey": "Fo",
   "loaderRange": "[54.0.0,55.0.0)",
-  "mcEdit": null,
-  "mcVersion": null,
+  "mcEdit": "JE",
+  "mcVersion": "26.2",
   "entrypoint": "com.aprism.refract.forge.ForgeSupportExtension",
   "provides": ["forge-loader"],
   "depends": {}
