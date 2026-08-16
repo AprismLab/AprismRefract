@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Aprism (sibling)
         uses: actions/checkout@v4
         with:
-          repository: NDBlockConnect/Aprism
+          repository: AprismLab/Aprism
           path: Aprism
 
       - name: Set up JDK 21
@@ -37,11 +37,11 @@ jobs:
         working-directory: Aprism
         run: ./gradlew :aprism-api:jar :aprism-loader-core:jar :aprism-manifest:jar --console=plain
 
-      - name: Build extension + package .aep
+      - name: Build extension + package all .aep variants
         working-directory: AprismRefract
-        run: ./gradlew build packageAep --console=plain
+        run: ./gradlew build packageAllAeps --console=plain
 
-      - name: Upload .aep artifact
+      - name: Upload .aep artifacts
         uses: actions/upload-artifact@v4
         with:
           name: aep-${{ github.sha }}
