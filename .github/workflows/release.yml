@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Aprism (sibling)
         uses: actions/checkout@v4
         with:
-          repository: NDBlockConnect/Aprism
+          repository: AprismLab/Aprism
           path: Aprism
 
       - name: Set up JDK 21
@@ -46,9 +46,9 @@ jobs:
         working-directory: AprismRefract
         run: ./gradlew build --console=plain
 
-      - name: Package .aep
+      - name: Package all .aep variants
         working-directory: AprismRefract
-        run: ./gradlew packageAep --console=plain
+        run: ./gradlew packageAllAeps --console=plain
 
       - name: Assemble artifacts
         shell: pwsh
@@ -93,7 +93,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete "${{ github.ref_name }}" --repo NDBlockConnect/AprismRefract --yes 2>$null
+          gh release delete "${{ github.ref_name }}" --repo AprismLab/AprismRefract --yes 2>$null
           exit 0
 
       - name: Create Pre-Release
@@ -102,31 +102,32 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $ver = "${{ github.ref_name }}"
-          $aepFile = Get-ChildItem dist/*.aep | Select-Object -First 1
-          $aep = $aepFile.Name
-          $loader = ($aep -split '-Support')[0]
+          $aepFiles = Get-ChildItem dist/*.aep
+          $loader = ($aepFiles[0].Name -split '-Support')[0]
+          $aepList = ($aepFiles | ForEach-Object { "  - ``$($_.Name)``" }) -join "`n"
           $notes = @"
           AprismRefract $loader-Support $ver (Pre-Release)
 
           Loader-support extension (.aep) for the $loader loader, built against
-          the Aprism v26.0 API surface. Targets Minecraft Java Edition 26.2.
+          the Aprism v26.5 API surface. Contains MC-version-specific variants.
 
           **Contents**
-          - ``$aep``: the loader-support extension pack
-          - ``checksums.txt``: SHA-256 of the artifact
-          - ``.sig`` / ``.bundle``: cosign keyless signatures
+          $aepList
+          - ``checksums.txt``: SHA-256 of all artifacts
+          - ``.sig`` / ``.bundle``: cosign keyless signatures (per artifact)
           - ``AprismRefract-$loader-sbom.cdx.json``: CycloneDX SBOM
 
           **Install**
-          Place the ``.aep`` in ``<instance>/aprism-extensions/`` and launch with
-          Aprism Loader v26.0. Aprism then scans the loader's mod folder.
+          Place the appropriate ``.aep`` for your MC version in
+          ``<instance>/aprism-extensions/`` and launch with Aprism Loader.
+          See docs/version-matrix.md for the full compatibility matrix.
 
           **Verify**
           ``````
-          certutil -hashfile $aep SHA256   # compare with checksums.txt
-          cosign verify-blob $aep --bundle $aep.bundle `
-            --certificate-identity-regexp https://github.com/NDBlockConnect/AprismRefract `
+          certutil -hashfile <aep-file> SHA256   # compare with checksums.txt
+          cosign verify-blob <aep-file> --bundle <aep-file>.bundle `
+            --certificate-identity-regexp https://github.com/AprismLab/AprismRefract `
             --certificate-oidc-issuer https://token.actions.githubusercontent.com
           ``````
           "@
-          gh release create $ver dist/* --prerelease --title $ver --notes $notes --repo NDBlockConnect/AprismRefract
+          gh release create $ver dist/* --prerelease --title $ver --notes $notes --repo AprismLab/AprismRefract
