@@ -30,7 +30,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.5-Alpha.1'
+version = 'v26.5-Alpha.2'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
@@ -94,9 +94,61 @@ aprismPackaging {
     outputDir = 'build/aprism'
 }
 
+// MC-version-specific .aep variants (v26.5-Alpha.2).
+// LiteLoader supports MC 1.7.10 through 1.12.2 only.
+def liteloaderVariants = [
+    [mcVersion: '1.12.2',   loaderRange: '[1.12.0,1.13.0)', mcLabel: '1.12.2'],
+    [mcVersion: '1.11.2',   loaderRange: '[1.11.0,1.12.0)', mcLabel: '1.11.2'],
+    [mcVersion: '1.10.2',   loaderRange: '[1.10.0,1.11.0)', mcLabel: '1.10.2'],
+    [mcVersion: '1.8.9',    loaderRange: '[1.8.0,1.9.0)',  mcLabel: '1.8.9'],
+]
+
+liteloaderVariants.eachWithIndex { variant, idx ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def aepName = "LiteLoader-Support-A[26.0,28.0)-L${variant.loaderRange}-JE-${variant.mcLabel}.aep"
+
+    tasks.register("packageAep${variant.mcLabel.replace('.', '_')}", com.aprism.packaging.PackageAepTask) {
+        dependsOn jar
+        inputJars = files(jar.archiveFile)
+        manifestFile = genManifest
+        outputFile = file("build/aprism/${aepName}")
+    }
+}
+
+// Default packageAep produces the MC 1.12.2 variant (the most recent LiteLoader target).
+// LiteLoader does not have builds for MC 26.x or 1.14+; the default manifest
+// declares mcVersion 1.12.2 for the primary LiteLoader target.
 packageAep {
     dependsOn jar
     inputJars = files(jar.archiveFile)
     manifestFile = file('aprism.extension.json')
-    outputFile = file("build/aprism/LiteLoader-Support-A[26.0,27.0)-L[1.12,1.13)-JE-26.2.aep")
+    outputFile = file("build/aprism/LiteLoader-Support-A[26.0,28.0)-L[1.12.0,1.13.0)-JE-1.12.2.aep")
+}
+
+tasks.register('packageAllAeps') {
+    dependsOn tasks.withType(com.aprism.packaging.PackageAepTask)
+}
+
+liteloaderVariants.each { variant ->
+    def genDir = file("build/generated/manifests/${variant.mcLabel}")
+    def genManifest = file("${genDir}/aprism.extension.json")
+    def taskName = "packageAep${variant.mcLabel.replace('.', '_')}"
+    tasks.named(taskName) {
+        doFirst {
+            genDir.mkdirs()
+            genManifest.text = """{
+  "extensionId": "liteloader-support",
+  "type": "loader-support",
+  "aprismRange": "[26.0.0,28.0.0)",
+  "loaderKey": "L",
+  "loaderRange": "${variant.loaderRange}",
+  "mcEdit": "JE",
+  "mcVersion": "${variant.mcVersion}",
+  "entrypoint": "com.aprism.refract.liteloader.LiteLoaderSupportExtension",
+  "provides": ["liteloader"],
+  "depends": {}
+}"""
+        }
+    }
 }
