@@ -1,6 +1,6 @@
-﻿# AprismRefract Version Compatibility Matrix
+# AprismRefract Version Compatibility Matrix
 
-> v26.5 | Maps Minecraft versions to loader versions and .aep artifact names.
+> v26.6-Alpha.1 | Maps Minecraft versions to loader versions and .aep artifact names.
 > Maintained by BlockConnect@StarsailsClover
 
 ## How to read this matrix
@@ -17,10 +17,10 @@ folder is silently ignored.
 
 | MC Version | Fabric Loader Range | .aep Artifact |
 |---|---|---|
-| 26.2 | [0.16.0, 0.17.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.17.0)-JE-26.2.aep` |
-| 26.1.2 | [0.16.0, 0.17.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.17.0)-JE-26.1.2.aep` |
-| 1.21.10 | [0.16.0, 0.17.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.17.0)-JE-1.21.10.aep` |
-| 1.21.4 | [0.16.0, 0.17.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.17.0)-JE-1.21.4.aep` |
+| 26.2 | [0.16.0, 0.20.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep` |
+| 26.1.2 | [0.16.0, 0.20.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.1.2.aep` |
+| 1.21.10 | [0.16.0, 0.20.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-1.21.10.aep` |
+| 1.21.4 | [0.16.0, 0.20.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-1.21.4.aep` |
 | 1.20.6 | [0.15.0, 0.16.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.15.0,0.16.0)-JE-1.20.6.aep` |
 | 1.20.1 | [0.15.0, 0.16.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.15.0,0.16.0)-JE-1.20.1.aep` |
 | 1.16.5 | [0.14.0, 0.15.0) | `Fabric-Support-A[26.0,28.0)-Fa[0.14.0,0.15.0)-JE-1.16.5.aep` |
