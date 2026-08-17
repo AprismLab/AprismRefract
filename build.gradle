@@ -1,4 +1,4 @@
-// LiteLoader-Support Aprism Extension (.aep)
+﻿// LiteLoader-Support Aprism Extension (.aep)
 // Loader-support extension (loader key "L") that lets Aprism Loader scan
 // liteloader-mods/ and load genuine .litemod mods.
 //
@@ -30,7 +30,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.5-Alpha.2'
+version = 'v26.5-Alpha.9'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
