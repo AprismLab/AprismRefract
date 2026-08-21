@@ -33,6 +33,9 @@ public final class QuiltSupportExtension implements IAprismExtension {
 
     @Override
     public void onInitialize(ExtensionContext context) {
+        // Initialize the Fabric Loader shim environment (v26.7-Alpha.3).
+        QuiltLoaderBridge.configureEnvironment(net.fabricmc.api.EnvType.CLIENT);
+
         context.registerLoaderSupport(QUILT_KEY, QUILT_MODS_FOLDER);
         // Own the Quilt entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Q".
