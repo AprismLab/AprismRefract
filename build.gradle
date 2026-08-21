@@ -27,7 +27,7 @@ repositories {
 }
 
 group = 'com.aprism.refract'
-version = 'v26.6'
+version = 'v26.7-Alpha.3'
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the

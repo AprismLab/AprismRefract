@@ -95,6 +95,9 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
 
     @Override
     public void invoke(LoadedModContainer container, AprismPhase phase) {
+        // Register the mod with the FabricLoader shim (v26.7-Alpha.3) so
+        // FabricLoader.getInstance().isModLoaded(id) answers for genuine mods.
+        FabricBridge.registerMod(container.getId());
         List<String> entrypoints = entrypointsFor(container, phase);
         if (entrypoints.isEmpty()) {
             return;
