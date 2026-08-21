@@ -3,6 +3,11 @@ package com.aprism.refract.forge;
 import com.aprism.api.ExtensionContext;
 import com.aprism.api.IAprismExtension;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+
 /**
  * Forge-Support Aprism Extension entrypoint (loader-support, loader key
  * {@code Fo}). Registers the {@code forge-mods/} folder so that Aprism
@@ -18,6 +23,11 @@ import com.aprism.api.IAprismExtension;
  * {@code LoaderEntrypointHandler} SPI seam via
  * {@link ExtensionContext#registerEntrypointHandler}.
  *
+ * <p>Since v26.7-Alpha.2 the extension also initializes the Forge environment
+ * shims: {@link FMLEnvironment} (dist/side) and {@link MinecraftForge#EVENT_BUS}
+ * (global event bus). This allows genuine Forge mods that query these static
+ * fields during class loading to receive valid values instead of null.
+ *
  * <p>Per FACT.md 9.14 the loader key {@code Fo} is reserved for Forge.
  *
  * @author BlockConnect@StarsailsClover
@@ -32,6 +42,12 @@ public final class ForgeSupportExtension implements IAprismExtension {
 
     @Override
     public void onInitialize(ExtensionContext context) {
+        // Initialize Forge environment shims (v26.7-Alpha.2).
+        FMLEnvironment.init(Dist.CLIENT, LogicalSide.CLIENT);
+
+        // MinecraftForge.EVENT_BUS is the global game-level event bus.
+        MinecraftForge.setEventBus(new ForgeEventBus());
+
         context.registerLoaderSupport(FORGE_KEY, FORGE_MODS_FOLDER);
         // Own the Forge entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Fo".

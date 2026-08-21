@@ -1,5 +1,6 @@
 package com.aprism.refract.forge;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Implementation of the Forge {@link IEventBus} shim bundled on this branch.
@@ -18,6 +20,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
  * event dispatches it to every listener whose registered type is assignable
  * from the event's runtime class, mirroring Forge's bus semantics closely
  * enough for construction-time registration patterns.
+ *
+ * <p>Since v26.7-Alpha.2 the bus also supports {@link #register(Object)}:
+ * scanning an object for {@code @SubscribeEvent}-annotated methods and
+ * registering them as listeners. The event type is inferred from each
+ * method's single parameter.
  *
  * @author BlockConnect@StarsailsClover
  */
@@ -49,6 +56,37 @@ public final class ForgeEventBus implements IEventBus {
                     listener.accept(event);
                 }
             }
+        }
+    }
+
+    @Override
+    public void register(Object target) {
+        if (target == null) {
+            return;
+        }
+        Class<?> clazz = target.getClass();
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (!method.isAnnotationPresent(SubscribeEvent.class)) {
+                continue;
+            }
+            Class<?>[] params = method.getParameterTypes();
+            if (params.length != 1) {
+                continue;
+            }
+            Class<?> eventType = params[0];
+            method.setAccessible(true);
+            Consumer<Object> wrapper = event -> {
+                try {
+                    method.invoke(target, event);
+                } catch (ReflectiveOperationException e) {
+                    Throwable cause = e.getCause() != null ? e.getCause() : e;
+                    throw new RuntimeException("@SubscribeEvent method "
+                            + method.getName() + " on " + clazz.getName()
+                            + " threw during event dispatch", cause);
+                }
+            };
+            listeners.computeIfAbsent(eventType, k -> new ArrayList<>())
+                    .add(wrapper);
         }
     }
 }

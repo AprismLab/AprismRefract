@@ -42,4 +42,13 @@ public interface IEventBus {
      * @param event the event instance
      */
     void post(Object event);
+
+    /**
+     * Registers all {@code @SubscribeEvent}-annotated methods on the given
+     * target object as event listeners. The event type is inferred from each
+     * method's single parameter.
+     *
+     * @param target the object whose annotated methods to register
+     */
+    void register(Object target);
 }
