@@ -1,5 +1,7 @@
 package net.neoforged.fml.event.lifecycle;
 
+import net.neoforged.fml.event.IModBusEvent;
+
 /**
  * NeoForge API shim: base class for mod lifecycle events. Lifecycle events
  * are fired through the mod-scoped {@code IEventBus} during the Aprism
@@ -7,5 +9,5 @@ package net.neoforged.fml.event.lifecycle;
  *
  * @author BlockConnect@StarsailsClover
  */
-public abstract class FMLLifecycleEvent {
+public abstract class FMLLifecycleEvent implements IModBusEvent {
 }

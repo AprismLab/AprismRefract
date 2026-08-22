@@ -13,9 +13,6 @@ import java.util.function.Consumer;
  * backs this shim with its own {@code NeoForgeEventBus}, so listeners
  * registered during mod construction are held by the branch extension.
  *
- * <p>Extracted from the Aprism core ({@code aprism-loader-core}) in
- * v26.0-Alpha.2 per the loader-support extraction.
- *
  * @author BlockConnect@StarsailsClover
  */
 public interface IEventBus {
@@ -28,6 +25,37 @@ public interface IEventBus {
      * @param <T>      the event type
      */
     <T> void addListener(Class<T> type, Consumer<T> consumer);
+
+    /**
+     * Registers an event listener with the receiveCancelled flag (NeoForge
+     * convention overload). Under Aprism the flag is accepted and ignored;
+     * cancelled-event semantics are not modelled by the shim bus.
+     *
+     * @param receiveCancelled whether to receive cancelled events
+     * @param type             the event class
+     * @param consumer         the listener invoked when an event of {@code type} is posted
+     * @param <T>              the event type
+     */
+    default <T> void addListener(boolean receiveCancelled, Class<T> type, Consumer<T> consumer) {
+        addListener(type, consumer);
+    }
+
+    /**
+     * Registers an event listener with priority and cancelled-receipt flags
+     * (full NeoForge convention overload, used by mods that wrap registration
+     * in their own helpers). Priority ordering is not modelled by the shim
+     * bus; the flag arguments are accepted and ignored.
+     *
+     * @param priority         the listener priority
+     * @param receiveCancelled whether to receive cancelled events
+     * @param type             the event class
+     * @param consumer         the listener invoked when an event of {@code type} is posted
+     * @param <T>              the event type
+     */
+    default <T> void addListener(EventPriority priority, boolean receiveCancelled,
+            Class<T> type, Consumer<T> consumer) {
+        addListener(type, consumer);
+    }
 
     /**
      * Registers a generic event listener.

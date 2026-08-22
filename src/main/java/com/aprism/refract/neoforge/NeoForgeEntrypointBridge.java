@@ -109,8 +109,12 @@ public final class NeoForgeEntrypointBridge {
 
     /**
      * Instantiates a NeoForge entrypoint class, injecting the given event bus.
-     * Prefers a constructor accepting a single {@link IEventBus} argument; if
-     * absent, falls back to the no-arg constructor.
+     * Tries the known NeoForge constructor conventions in order:
+     * <ol>
+     *   <li>{@code (IEventBus, Dist)} — common on NeoForge 21.x (e.g. JEI)</li>
+     *   <li>{@code (IEventBus)} — classic mod-scoped bus injection</li>
+     *   <li>{@code ()} — no-arg fallback</li>
+     * </ol>
      *
      * @param clazz    the {@code @Mod} entrypoint class
      * @param eventBus the mod-scoped event bus to inject
@@ -119,13 +123,21 @@ public final class NeoForgeEntrypointBridge {
     public static Object construct(Class<?> clazz, IEventBus eventBus) {
         try {
             try {
-                var ctor = clazz.getDeclaredConstructor(IEventBus.class);
+                var ctor = clazz.getDeclaredConstructor(IEventBus.class,
+                        net.neoforged.api.distmarker.Dist.class);
                 ctor.setAccessible(true);
-                return ctor.newInstance(eventBus);
+                return ctor.newInstance(eventBus,
+                        net.neoforged.fml.loading.FMLEnvironment.dist);
             } catch (NoSuchMethodException ignored) {
-                var ctor = clazz.getDeclaredConstructor();
-                ctor.setAccessible(true);
-                return ctor.newInstance();
+                try {
+                    var ctor = clazz.getDeclaredConstructor(IEventBus.class);
+                    ctor.setAccessible(true);
+                    return ctor.newInstance(eventBus);
+                } catch (NoSuchMethodException alsoIgnored) {
+                    var ctor = clazz.getDeclaredConstructor();
+                    ctor.setAccessible(true);
+                    return ctor.newInstance();
+                }
             }
         } catch (ReflectiveOperationException e) {
             Throwable cause = e.getCause() != null ? e.getCause() : e;

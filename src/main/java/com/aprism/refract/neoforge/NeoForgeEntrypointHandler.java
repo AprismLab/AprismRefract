@@ -78,6 +78,13 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
 
     @Override
     public void invoke(LoadedModContainer container, AprismPhase phase) {
+        // Feed the ModList shim so ModList.get().isLoaded(id) answers for
+        // inter-mod presence checks (v26.7-Alpha.4).
+        net.neoforged.fml.ModList.setLoadedMods(java.util.stream.Stream.concat(
+                java.util.Arrays.stream(net.neoforged.fml.ModList.get().getLoadedMods().toArray(new String[0])),
+                java.util.stream.Stream.of(container.getId()))
+                .distinct()
+                .toList());
         switch (phase) {
             case INIT -> initOrFireLifecycleEvent(container, new FMLCommonSetupEvent());
             case CLIENT -> fireLifecycleEvent(container, new FMLClientSetupEvent());
@@ -106,6 +113,9 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
                 return;
             }
             try {
+                // ModLoadingContext.getActiveContainer() must answer THIS mod
+                // while its constructor runs (v26.7-Alpha.4).
+                net.neoforged.fml.ModLoadingContext.setActiveModId(container.getId());
                 Class<?> clazz = Class.forName(modClasses.get(0), true,
                         getClass().getClassLoader());
                 NeoForgeEventBus bus = new NeoForgeEventBus();
@@ -117,8 +127,16 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
                 throw new RuntimeException("Failed to load NeoForge entrypoint for "
                         + container.getId(), e);
             } catch (RuntimeException e) {
+                // Log the full cause chain (v26.7-Alpha.4): shim gaps surface
+                // as NoClassDefFoundError deep in the cause tree; printing only
+                // toString() hid the missing class name.
+                Throwable cause = e;
+                while (cause.getCause() != null && cause.getCause() != cause) {
+                    cause = cause.getCause();
+                }
                 LOG.warning("NeoForge mod " + container.getId()
-                        + " failed to construct during INIT: " + e);
+                        + " failed to construct during INIT: " + e
+                        + " | root cause: " + cause);
             }
         } else {
             fireLifecycleEvent(container, lifecycleEvent);
