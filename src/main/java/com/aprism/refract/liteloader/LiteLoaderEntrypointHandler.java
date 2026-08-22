@@ -63,8 +63,27 @@ public final class LiteLoaderEntrypointHandler implements LoaderEntrypointHandle
         return true;
     }
 
+    // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
     @Override
     public void invoke(LoadedModContainer container, AprismPhase phase) {
+        // TCCL discipline (v26.8-Alpha.3, ported from the neoforge branch):
+        // keep the whole dispatch under the mod-space TCCL for uniformity
+        // across the five branches; legacy LiteLoader mods rarely use
+        // ServiceLoader but the invariant costs nothing and stays consistent.
+        Thread current = Thread.currentThread();
+        ClassLoader previousTccl = current.getContextClassLoader();
+        current.setContextClassLoader(getClass().getClassLoader());
+        try {
+            dispatch(container, phase);
+        } finally {
+            current.setContextClassLoader(previousTccl);
+        }
+    }
+
+    /**
+     * Phase dispatch proper. Runs under the mod-space TCCL.
+     */
+    private void dispatch(LoadedModContainer container, AprismPhase phase) {
         // LiteLoader initialization is a single init(File); only INIT runs.
         if (phase != AprismPhase.INIT) {
             return;
