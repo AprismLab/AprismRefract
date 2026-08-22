@@ -93,6 +93,7 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
         return true;
     }
 
+    // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
     @Override
     public void invoke(LoadedModContainer container, AprismPhase phase) {
         // Register the mod with the FabricLoader shim (v26.7-Alpha.3) so
@@ -106,6 +107,26 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
         // jar, so its classloader IS the shared class space that also contains
         // the mod jars — mod entrypoint classes resolve here.
         ClassLoader loader = getClass().getClassLoader();
+        // TCCL discipline (v26.8-Alpha.3, ported from the neoforge branch):
+        // mod code must see the shared AprismClassLoader as the thread context
+        // classloader while it runs — ServiceLoader.load() resolves against
+        // the TCCL, so without this every mod-side META-INF/services lookup
+        // (common in Fabric libraries) resolves against the wrong space.
+        Thread current = Thread.currentThread();
+        ClassLoader previousTccl = current.getContextClassLoader();
+        current.setContextClassLoader(loader);
+        try {
+            dispatchEntrypoints(container, phase, entrypoints, loader);
+        } finally {
+            current.setContextClassLoader(previousTccl);
+        }
+    }
+
+    /**
+     * Phase dispatch proper. Runs under the mod-space TCCL.
+     */
+    private void dispatchEntrypoints(LoadedModContainer container, AprismPhase phase,
+            List<String> entrypoints, ClassLoader loader) {
         for (String className : entrypoints) {
             try {
                 Class<?> clazz = Class.forName(className, true, loader);
