@@ -32,6 +32,34 @@ repositories {
 group = 'com.aprism.refract'
 version = 'v26.7-Alpha.1'
 
+// Optional Minecraft client jar for MC-typed API shims (v26.8-Alpha.2).
+// Some deep-mod entrypoints (e.g. JEI's DeferredRegister.create(Registry,...))
+// require shim signatures naming vanilla classes. When a local unobfuscated
+// 26.x client jar is available (property aprism.mcJar, else the default mdl
+// location), the src/mc/java source set is compiled in; otherwise those
+// shims are omitted and the build degrades gracefully (CI-safe). The jar is
+// compileOnly: never bundled into the .aep.
+def mcJarCandidates = [
+    System.getProperty('aprism.mcJar') ?: '',
+    "${System.getProperty('user.home')}/AppData/Roaming/mdl/instances/Vanilla 26.2/versions/26.2/26.2.jar",
+]
+def mcJar = mcJarCandidates.find { it && file(it).exists() }
+// MC 26.x ships Java-25 bytecode (classfile v69): reading it requires a
+// JDK-25 compiler even though our output stays at release 21.
+if (mcJar) {
+    sourceSets.main.java.srcDir 'src/mc/java'
+}
+logger.lifecycle("NeoForge-Support: MC-typed shims " + (mcJar ? "ENABLED (${mcJar})" : "disabled (no client jar found)"))
+
+tasks.withType(JavaCompile).configureEach {
+    // Keep emitted bytecode at the branch baseline (v65 / Java 21) so the
+    // .aep remains loadable on Java 21+ runtimes; the v69 client jar is only
+    // an input to compilation, never bundled.
+    if (mcJar) {
+        options.release = 21
+    }
+}
+
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
 // branch stays in sync with whatever Aprism version is currently checked out
@@ -46,7 +74,10 @@ def manifestLibs = "../Aprism/aprism-manifest/build/libs"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        // 21 by default; elevated to 25 above ONLY when MC-typed shims are
+        // enabled (reading the v69 client jar requires a JDK-25 compiler).
+        // options.release keeps emitted bytecode at the Java 21 baseline.
+        languageVersion = mcJar ? JavaLanguageVersion.of(25) : JavaLanguageVersion.of(21)
     }
 }
 
@@ -61,6 +92,11 @@ dependencies {
     // ships ASM un-relocated (org.objectweb.asm), so the bridge resolves
     // against it at runtime. The test suite adds the real dependency below.
     compileOnly 'org.ow2.asm:asm:9.9'
+
+    // MC-typed shim compilation (only when a client jar was found above).
+    if (mcJar) {
+        compileOnly files(mcJar)
+    }
 
     // Branch-local test suite: runs the real Aprism runtime against the
     // built .aep so this branch verifies its own extraction end to end
