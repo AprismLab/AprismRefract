@@ -103,6 +103,25 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
         // jar, so its classloader IS the shared class space that also contains
         // the mod jars — mod entrypoint classes resolve here.
         ClassLoader loader = getClass().getClassLoader();
+        // TCCL discipline (v26.8-Alpha.3, ported from the neoforge branch):
+        // ServiceLoader.load() resolves against the TCCL; mod-side
+        // META-INF/services lookups must see the shared AprismClassLoader.
+        // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+        Thread current = Thread.currentThread();
+        ClassLoader previousTccl = current.getContextClassLoader();
+        current.setContextClassLoader(loader);
+        try {
+            dispatchEntrypoints(container, phase, entrypoints, loader);
+        } finally {
+            current.setContextClassLoader(previousTccl);
+        }
+    }
+
+    /**
+     * Phase dispatch proper. Runs under the mod-space TCCL.
+     */
+    private void dispatchEntrypoints(LoadedModContainer container, AprismPhase phase,
+            List<String> entrypoints, ClassLoader loader) {
         for (String className : entrypoints) {
             try {
                 Class<?> clazz = Class.forName(className, true, loader);
