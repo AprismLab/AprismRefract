@@ -24,4 +24,14 @@ public final class FMLLoader {
     public static boolean isLoadingComplete() {
         return false;
     }
+
+    /**
+     * Returns the current FML loader instance (null under Aprism; callers
+     * guard on null).
+     *
+     * @return null
+     */
+    public static FMLLoader getCurrentOrNull() {
+        return null;
+    }
 }

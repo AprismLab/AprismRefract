@@ -1,28 +1,85 @@
 package net.neoforged.neoforgespi.language;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.objectweb.asm.Type;
 
 /**
- * NeoForge SPI shim: per-mod annotation scan result. Under Aprism no scan
- * pass runs; instances only exist so signatures referencing the type resolve.
+ * NeoForge SPI shim: per-mod annotation scan result. Under Aprism the scan
+ * is performed by the loader-support extension itself (ASM pass over the
+ * mod jar's class files), producing the same shape the real FML scan would.
+ *
+ * <p>NOTE: this mirrors real NeoForge's type shape - {@code ModFileScanData}
+ * is an abstract CLASS there (mod bytecode invokes its methods via
+ * invokevirtual), so it must be a class here too; making it an interface
+ * triggers IncompatibleClassChangeError in mods compiled upstream.
  *
  * @author BlockConnect@StarsailsClover
  */
-public interface ModFileScanData {
+public abstract class ModFileScanData {
 
     /**
-     * @return the annotation data (empty under Aprism)
+     * Returns all annotation entries found in the scanned mod file.
+     *
+     * @return the annotation set (never null)
      */
-    List<AnnotationData> getAnnotations();
+    public abstract Set<AnnotationData> getAnnotations();
 
     /**
-     * NeoForge SPI shim: one discovered annotation entry.
+     * One discovered annotation entry. Abstract class per real NeoForge
+     * (invoked via invokevirtual by mod bytecode).
      */
-    interface AnnotationData {
+    public abstract static class AnnotationData {
 
         /**
-         * @return the annotation descriptor
+         * Returns the ASM type of the annotation descriptor.
+         *
+         * @return the annotation type
          */
-        String annotationType();
+        public abstract Type annotationType();
+
+        /**
+         * Returns the binary name of the class carrying the annotation.
+         *
+         * @return the owning class binary name
+         */
+        public abstract String clazzName();
+
+        /**
+         * Returns the target member name. For class targets this is the
+         * binary class name (resolvable via {@code Class.forName}).
+         *
+         * @return the member name
+         */
+        public abstract String memberName();
+
+        /**
+         * Returns what kind of target carries the annotation.
+         *
+         * @return the target kind
+         */
+        public abstract TargetType memberTargetKind();
+
+        /**
+         * Returns the annotation's element values (may be empty).
+         *
+         * @return unmodifiable annotation data map
+         */
+        public abstract Map<String, Object> annotationData();
+    }
+
+    /**
+     * Kind of program element carrying an annotation.
+     */
+    public enum TargetType {
+        /** Annotation-type target. */
+        ANNOTATION_TYPE,
+        /** Class target. */
+        CLASS,
+        /** Field target. */
+        FIELD,
+        /** Method target. */
+        METHOD
     }
 }

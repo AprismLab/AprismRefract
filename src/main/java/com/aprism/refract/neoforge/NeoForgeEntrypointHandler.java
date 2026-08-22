@@ -78,6 +78,24 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
 
     @Override
     public void invoke(LoadedModContainer container, AprismPhase phase) {
+        // Mod code must see the shared AprismClassLoader as the thread context
+        // classloader while it runs (v26.8-Alpha.1): ServiceLoader.load()
+        // resolves against the TCCL, so without this every mod-side
+        // META-INF/services lookup (e.g. JEI's IPlatformHelper) fails.
+        Thread current = Thread.currentThread();
+        ClassLoader previousTccl = current.getContextClassLoader();
+        current.setContextClassLoader(getClass().getClassLoader());
+        try {
+            dispatch(container, phase);
+        } finally {
+            current.setContextClassLoader(previousTccl);
+        }
+    }
+
+    /**
+     * Phase dispatch proper. Runs under the mod-space TCCL.
+     */
+    private void dispatch(LoadedModContainer container, AprismPhase phase) {
         // Feed the ModList shim so ModList.get().isLoaded(id) answers for
         // inter-mod presence checks (v26.7-Alpha.4).
         net.neoforged.fml.ModList.setLoadedMods(java.util.stream.Stream.concat(
@@ -85,6 +103,19 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
                 java.util.stream.Stream.of(container.getId()))
                 .distinct()
                 .toList());
+        // Produce REAL annotation scan data for this mod jar (v26.8-Alpha.1):
+        // consumers such as JEI resolve their plugins from ModList.getAllScanData().
+        try {
+            net.neoforged.neoforgespi.language.ModFileScanData scan =
+                    ModAnnotationScanner.scan(container.getSourcePath());
+            var aggregated = new java.util.ArrayList<>(
+                    net.neoforged.fml.ModList.get().getAllScanData());
+            aggregated.add(scan);
+            net.neoforged.fml.ModList.setAllScanData(aggregated);
+        } catch (RuntimeException e) {
+            LOG.warning("Annotation scan failed for " + container.getId()
+                    + "; continuing with partial scan data: " + e);
+        }
         switch (phase) {
             case INIT -> initOrFireLifecycleEvent(container, new FMLCommonSetupEvent());
             case CLIENT -> fireLifecycleEvent(container, new FMLClientSetupEvent());

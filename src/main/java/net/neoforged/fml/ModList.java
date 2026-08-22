@@ -13,6 +13,7 @@ import java.util.List;
 public final class ModList {
 
     private static volatile List<String> loadedIds = List.of();
+    private static volatile List<net.neoforged.neoforgespi.language.ModFileScanData> scanData = List.of();
 
     private ModList() {
     }
@@ -56,13 +57,35 @@ public final class ModList {
     }
 
     /**
-     * Returns annotation scan data across all mod files (empty under Aprism:
-     * the shim runtime performs no annotation scan pass).
+     * Returns annotation scan data across all mod files. Under v26.8+ this
+     * carries REAL data produced by the loader-support extension's ASM scan
+     * of each discovered mod jar.
      *
-     * @return unmodifiable empty list
+     * @return unmodifiable list of per-mod scan data
      */
     public List<net.neoforged.neoforgespi.language.ModFileScanData> getAllScanData() {
-        return List.of();
+        return List.copyOf(scanData);
+    }
+
+    /**
+     * Looks up a mod container by id (empty under Aprism: containers are not
+     * retained by the shim facade).
+     *
+     * @param modId the mod id
+     * @return empty optional
+     */
+    public java.util.Optional<ModContainer> getModContainerById(String modId) {
+        return java.util.Optional.empty();
+    }
+
+    /**
+     * Replaces the aggregated scan-data list. Called by the Aprism handler
+     * after each mod's jar is scanned.
+     *
+     * @param data the full scan-data list
+     */
+    public static void setAllScanData(List<net.neoforged.neoforgespi.language.ModFileScanData> data) {
+        scanData = List.copyOf(data);
     }
 
     private static final class Holder {

@@ -1,5 +1,6 @@
 package net.neoforged.fml.event.lifecycle;
 
+import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 
 /**
@@ -9,5 +10,5 @@ import net.neoforged.fml.event.IModBusEvent;
  *
  * @author BlockConnect@StarsailsClover
  */
-public abstract class FMLLifecycleEvent implements IModBusEvent {
+public abstract class FMLLifecycleEvent extends Event implements IModBusEvent {
 }
