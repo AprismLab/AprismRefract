@@ -1,6 +1,6 @@
 # AprismRefract Version Compatibility Matrix
 
-> v26.6 | Maps Minecraft versions to loader versions and .aep artifact names.
+> v26.8 | Maps Minecraft versions to loader versions and .aep artifact names.
 > Maintained by BlockConnect@StarsailsClover
 
 ## How to read this matrix
