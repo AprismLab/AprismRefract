@@ -49,9 +49,9 @@ public interface FabricLoader {
     /**
      * Returns all loaded mod containers (minimal projection).
      *
-     * @return unmodifiable list of mod ids as containers
+     * @return unmodifiable collection of mod ids as containers
      */
-    List<String> getAllMods();
+    java.util.Collection<String> getAllMods();
 }
 
 final class InstanceHolder {
