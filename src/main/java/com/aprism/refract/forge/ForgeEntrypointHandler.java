@@ -99,12 +99,19 @@ public final class ForgeEntrypointHandler implements LoaderEntrypointHandler {
      * Phase dispatch proper. Runs under the mod-space TCCL.
      */
     private void dispatch(LoadedModContainer container, AprismPhase phase) {
+        // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+        // v26.9-Alpha.1: event ORDER aligned with real Forge - client setup
+        // fires BEFORE load-complete (Aprism phase order runs COMPLETE
+        // before CLIENT; LoadComplete moved to the CLIENT tail).
         switch (phase) {
-            case INIT -> initOrFireLifecycleEvent(container, new FMLCommonSetupEvent());
-            case CLIENT -> fireLifecycleEvent(container, new FMLClientSetupEvent());
-            case SETUP -> fireLifecycleEvent(container, new InterModEnqueueEvent());
-            case COMPLETE -> {
+            case INIT ->
+                initOrFireLifecycleEvent(container, new FMLCommonSetupEvent());
+            case SETUP ->
+                fireLifecycleEvent(container, new InterModEnqueueEvent());
+            case COMPLETE ->
                 fireLifecycleEvent(container, new InterModProcessEvent());
+            case CLIENT -> {
+                fireLifecycleEvent(container, new FMLClientSetupEvent());
                 fireLifecycleEvent(container, new FMLLoadCompleteEvent());
             }
             case PREINIT, SERVER -> { /* no Forge lifecycle equivalent */ }
