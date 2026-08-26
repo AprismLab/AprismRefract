@@ -117,14 +117,20 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
                     + "; continuing with partial scan data: " + e);
         }
         switch (phase) {
+            // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+            // v26.9-Alpha.1: event ORDER aligned with real NeoForge - client
+            // setup fires BEFORE load-complete. Aprism's phase order runs
+            // COMPLETE before CLIENT, so FMLLoadCompleteEvent moved from
+            // COMPLETE to the tail of CLIENT; JEI-class StartEventObservers
+            // await exactly this sequence.
             case INIT -> initOrFireLifecycleEvent(container, new FMLCommonSetupEvent());
-            case CLIENT -> fireLifecycleEvent(container, new FMLClientSetupEvent());
-            case SERVER -> fireLifecycleEvent(container, new FMLDedicatedServerSetupEvent());
             case SETUP -> fireLifecycleEvent(container, new InterModEnqueueEvent());
-            case COMPLETE -> {
-                fireLifecycleEvent(container, new InterModProcessEvent());
+            case COMPLETE -> fireLifecycleEvent(container, new InterModProcessEvent());
+            case CLIENT -> {
+                fireLifecycleEvent(container, new FMLClientSetupEvent());
                 fireLifecycleEvent(container, new FMLLoadCompleteEvent());
             }
+            case SERVER -> fireLifecycleEvent(container, new FMLDedicatedServerSetupEvent());
             case PREINIT -> { /* no NeoForge equivalent */ }
         }
     }
