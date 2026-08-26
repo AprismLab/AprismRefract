@@ -1,3 +1,4 @@
+# GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 name: Release
 
 on:
@@ -9,12 +10,11 @@ on:
       - 'quilt/v*'
       - 'liteloader/v*'
   # Manual fallback: tag-push events have silently not fired on this repo
-  # since the v26.0 line (tags exist, workflow exists at the tagged commit,
-  # no run appears). workflow_dispatch lets a maintainer re-run the
-  # pipeline for a given tag: gh workflow run release.yml -f tag=fabric/v26.9
+  # since the v26.0 line. Dispatch a run for a given tag:
+  #   gh workflow run release.yml --ref main -f tag=fabric/v26.9
   workflow_dispatch:
     inputs:
-      tag:
+      release_tag:
         description: 'Tag to release (e.g. fabric/v26.9)'
         required: true
         type: string
@@ -29,29 +29,20 @@ jobs:
 
     steps:
       - name: Resolve tag (dispatch or push)
-        id: tag
+        id: resolve
         shell: pwsh
         run: |
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            "tag=${{ inputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
-          } else {
-            "tag=${{ steps.tag.outputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
-          }
-
-      - name: Resolve tag (dispatch or push)
-        id: tag
-        shell: pwsh
-        run: |
-          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            "tag=${{ inputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
+            "tag=${{ inputs.release_tag }}" | Add-Content $env:GITHUB_OUTPUT
           } else {
             "tag=${{ github.ref_name }}" | Add-Content $env:GITHUB_OUTPUT
           }
+
       - name: Checkout AprismRefract at the release tag
         uses: actions/checkout@v4
         with:
           path: AprismRefract
-          ref: ${{ steps.tag.outputs.tag }}
+          ref: ${{ steps.resolve.outputs.tag }}
 
       - name: Checkout Aprism (sibling)
         uses: actions/checkout@v4
@@ -111,7 +102,7 @@ jobs:
       - name: Generate SBOM (CycloneDX)
         shell: pwsh
         run: |
-          $ver = "${{ steps.tag.outputs.tag }}"
+          $ver = "${{ steps.resolve.outputs.tag }}"
           $aepName = (Get-ChildItem dist/*.aep | Select-Object -First 1).Name
           $loader = ($aepName -split '-Support')[0]
           npm install -g @cyclonedx/cdxgen
@@ -123,23 +114,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete "${{ steps.tag.outputs.tag }}" --repo AprismLab/AprismRefract --yes 2>$null
+          gh release delete "${{ steps.resolve.outputs.tag }}" --repo AprismLab/AprismRefract --yes 2>$null
           exit 0
 
-      - name: Create Pre-Release
+      - name: Create release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $ver = "${{ steps.tag.outputs.tag }}"
+          $ver = "${{ steps.resolve.outputs.tag }}"
           $aepFiles = Get-ChildItem dist/*.aep
           $loader = ($aepFiles[0].Name -split '-Support')[0]
           $aepList = ($aepFiles | ForEach-Object { "  - ``$($_.Name)``" }) -join "`n"
           $notes = @"
-          AprismRefract $loader-Support $ver (Pre-Release)
+          AprismRefract $loader-Support $ver
 
           Loader-support extension (.aep) for the $loader loader, built against
-          the Aprism v26.5 API surface. Contains MC-version-specific variants.
+          the Aprism core v26.x line. Contains MC-version-specific variants.
 
           **Contents**
           $aepList
