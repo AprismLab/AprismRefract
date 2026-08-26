@@ -38,10 +38,20 @@ jobs:
             "tag=${{ steps.tag.outputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
           }
 
-      - name: Checkout AprismRefract (subdirectory)
+      - name: Resolve tag (dispatch or push)
+        id: tag
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "tag=${{ inputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
+          } else {
+            "tag=${{ github.ref_name }}" | Add-Content $env:GITHUB_OUTPUT
+          }
+      - name: Checkout AprismRefract at the release tag
         uses: actions/checkout@v4
         with:
           path: AprismRefract
+          ref: ${{ steps.tag.outputs.tag }}
 
       - name: Checkout Aprism (sibling)
         uses: actions/checkout@v4
