@@ -8,6 +8,16 @@ on:
       - 'forge/v*'
       - 'quilt/v*'
       - 'liteloader/v*'
+  # Manual fallback: tag-push events have silently not fired on this repo
+  # since the v26.0 line (tags exist, workflow exists at the tagged commit,
+  # no run appears). workflow_dispatch lets a maintainer re-run the
+  # pipeline for a given tag: gh workflow run release.yml -f tag=fabric/v26.9
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. fabric/v26.9)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -18,6 +28,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Resolve tag (dispatch or push)
+        id: tag
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "tag=${{ inputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
+          } else {
+            "tag=${{ steps.tag.outputs.tag }}" | Add-Content $env:GITHUB_OUTPUT
+          }
+
       - name: Checkout AprismRefract (subdirectory)
         uses: actions/checkout@v4
         with:
@@ -81,7 +101,7 @@ jobs:
       - name: Generate SBOM (CycloneDX)
         shell: pwsh
         run: |
-          $ver = "${{ github.ref_name }}"
+          $ver = "${{ steps.tag.outputs.tag }}"
           $aepName = (Get-ChildItem dist/*.aep | Select-Object -First 1).Name
           $loader = ($aepName -split '-Support')[0]
           npm install -g @cyclonedx/cdxgen
@@ -93,7 +113,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete "${{ github.ref_name }}" --repo AprismLab/AprismRefract --yes 2>$null
+          gh release delete "${{ steps.tag.outputs.tag }}" --repo AprismLab/AprismRefract --yes 2>$null
           exit 0
 
       - name: Create Pre-Release
@@ -101,7 +121,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $ver = "${{ github.ref_name }}"
+          $ver = "${{ steps.tag.outputs.tag }}"
           $aepFiles = Get-ChildItem dist/*.aep
           $loader = ($aepFiles[0].Name -split '-Support')[0]
           $aepList = ($aepFiles | ForEach-Object { "  - ``$($_.Name)``" }) -join "`n"
@@ -130,4 +150,15 @@ jobs:
             --certificate-oidc-issuer https://token.actions.githubusercontent.com
           ``````
           "@
-          gh release create $ver dist/* --prerelease --title $ver --notes $notes --repo AprismLab/AprismRefract
+          # Release channel per the versioning spec: Alpha tags publish as
+          # Pre-Release; bare-number GA publishes as a full Release (and
+          # becomes the repo's latest).
+          $createArgs = @("release", "create", $ver, "dist/*",
+              "--title", $ver, "--notes", $notes,
+              "--repo", "AprismLab/AprismRefract")
+          if ($ver -match "-Alpha") {
+              $createArgs += "--prerelease"
+          } else {
+              $createArgs += "--latest"
+          }
+          gh @createArgs
