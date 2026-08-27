@@ -1,0 +1,10 @@
+{
+  "schema": "aprismwarp.aep-editor/v1",
+  "extensionId": "fabric-support",
+  "version": "26.9.0-alpha.1",
+  "requires": {
+    "aprismRange": ">=26.8.0",
+    "workTypes": ["AprismExtension"]
+  },
+  "capabilities": []
+}
