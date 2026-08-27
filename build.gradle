@@ -105,6 +105,7 @@ quiltVariants.eachWithIndex { variant, idx ->
         dependsOn jar
         inputJars = files(jar.archiveFile)
         manifestFile = genManifest
+        editorManifestFile = file('aprismwarp.editor.json')
         outputFile = file("build/aprism/${aepName}")
     }
 }
