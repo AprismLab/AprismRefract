@@ -128,6 +128,7 @@ test {
 // this extension's jar and the aprism.extension.json manifest.
 aprismPackaging {
     outputDir = 'build/aprism'
+    editorManifestFile = 'aprismwarp.editor.json'
 }
 
 // MC-version-specific .aep variants (v26.5-Alpha.2).
@@ -177,6 +178,7 @@ neoforgeVariants.each { variant ->
             genDir.mkdirs()
             genManifest.text = """{
   "extensionId": "neoforge-support",
+  "version": "26.9.0-alpha.1",
   "type": "loader-support",
   "aprismRange": "[26.0.0,28.0.0)",
   "loaderKey": "N",
