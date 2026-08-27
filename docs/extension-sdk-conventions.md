@@ -60,6 +60,7 @@ keys without updating Aprism `ModDiscoverer` and this table together.
 ```json
 {
   "extensionId": "<loader>-support",
+  "version": "26.9.0-alpha.1",
   "type": "loader-support",
   "aprismRange": "[26.0.0,27.0.0)",
   "loaderKey": "<Key>",
@@ -74,6 +75,8 @@ keys without updating Aprism `ModDiscoverer` and this table together.
 
 Field rules:
 - `type` MUST be `loader-support`.
+- `version` SHOULD identify the extension artifact's own SemVer version. It is
+  consumed by newer Aprism cores for extension dependency range matching.
 - `loaderKey` MUST match the key in Section 3 and the constant registered by
   the extension's `onInitialize`.
 - `aprismRange` is a SemVer range of Aprism core versions; keep it aligned with
@@ -83,6 +86,40 @@ Field rules:
 - `entrypoint` MUST be the fully-qualified `IAprismExtension` implementation.
 - `provides` SHOULD include `<loader>-loader` so mods depending on the loader
   environment can resolve it.
+
+## 4a. Optional AprismWarp editor catalog
+
+The current AEP format remains a ZIP container with the runtime manifest and
+embedded extension jar at its root. A loader-support branch MAY include a
+second root-level file named `aprismwarp.editor.json`:
+
+```json
+{
+  "schema": "aprismwarp.aep-editor/v1",
+  "extensionId": "<loader>-support",
+  "version": "26.9.0-alpha.1",
+  "requires": {
+    "aprismRange": ">=26.8.0",
+    "workTypes": ["AprismExtension"]
+  },
+  "capabilities": []
+}
+```
+
+Rules:
+
+- The catalog MUST be at the AEP ZIP root and MUST be named exactly
+  `aprismwarp.editor.json`.
+- `schema` MUST be `aprismwarp.aep-editor/v1`.
+- `extensionId` SHOULD match `aprism.extension.json`.
+- `capabilities` is an editor declaration only; it is not an executable
+  extension entrypoint and MUST NOT be loaded by Aprism runtime.
+- The catalog is optional metadata for AprismWarp. Its absence MUST NOT make
+  an otherwise valid AEP uninstallable or unloadable.
+- The packaging configuration is `aprismPackaging.editorManifestFile =
+  'aprismwarp.editor.json'`.
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
 
 ## 5. Entrypoint class template
 
@@ -144,3 +181,4 @@ in FACT.md.
 |---|---|
 | 2026-08-09 | Initial SDK conventions document created on main. Clarified that entrypoint bridges and loader API shims live in Aprism `aprism-loader-core`, while the `.aep` entrypoint class + manifest live in this repository's loader branches. |
 | 2026-08-09 | Refined the Section 3 loader registry to the exact implemented conventions: Forge section-aware `mods.toml` (honors `mandatory`) + IEventBus constructor injection; Quilt `quilt_loader` block with `init` -> `main` projection and Fabric-compatible dispatch (Quilt's built-in Fabric API compat layer); LiteLoader `LiteMod` interface discovery + `init(File)`. All five loader branches are now developed. |
+| 2026-08-28 | Adopted the AprismWarp editor catalog extension: optional root-level `aprismwarp.editor.json` using `aprismwarp.aep-editor/v1`; added extension self-version guidance and packaging DSL convention. |
