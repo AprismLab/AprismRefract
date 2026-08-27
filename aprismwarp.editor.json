@@ -1,7 +1,7 @@
 {
   "schema": "aprismwarp.aep-editor/v1",
   "extensionId": "neoforge-support",
-  "version": "26.9.0-alpha.1",
+  "version": "26.9.0-alpha.2",
   "requires": {
     "aprismRange": ">=26.8.0",
     "workTypes": ["AprismExtension"]
