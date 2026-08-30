@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.mumfrey.liteloader.core.LiteMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Test fixture LiteLoader mod. Implements the LiteLoader {@code LiteMod} shim
  * (bundled on this branch) so
@@ -48,6 +49,8 @@ public final class LiteModRecordingMod implements LiteMod {
     public static List<String> getGlobalCalls() {
         return List.copyOf(GLOBAL_CALLS);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Override
     public String getName() {

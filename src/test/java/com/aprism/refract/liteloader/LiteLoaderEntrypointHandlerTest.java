@@ -22,6 +22,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.manifest.AprismManifest;
 import com.aprism.refract.liteloader.test.LiteModRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for {@link LiteLoaderEntrypointHandler}: SPI contract (loader
  * key, exclusivity) and the LiteLoader init model — INIT-only construction +
@@ -45,6 +46,8 @@ class LiteLoaderEntrypointHandlerTest {
         LiteModRecordingMod.resetGlobal();
         handler = new LiteLoaderEntrypointHandler();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void servesLiteLoaderKeyAndIsExclusive() {
@@ -112,6 +115,8 @@ class LiteLoaderEntrypointHandlerTest {
                 Map.of(), List.of(), Map.of(), Map.of(), null, List.of(), Map.of());
         return new LoadedModContainer(manifest, archivePath, "L");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a .litemod archive with the real {@code LiteMod} class bytes. */
     private Path writeLiteMod(String modId) throws IOException {

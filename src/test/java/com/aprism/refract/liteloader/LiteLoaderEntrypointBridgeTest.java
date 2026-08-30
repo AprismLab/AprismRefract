@@ -17,6 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.aprism.refract.liteloader.test.LiteModRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for the extracted {@link LiteLoaderEntrypointBridge}: bytecode
  * scanning of {@code .litemod} archives for {@code LiteMod} entrypoints and
@@ -54,6 +55,8 @@ class LiteLoaderEntrypointBridgeTest {
     void invokeInitReturnsFalseWithoutInitMethod() {
         assertThat(LiteLoaderEntrypointBridge.invokeInit(new Object(), new File("x"))).isFalse();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a .litemod archive with the real {@code LiteMod} class bytes. */
     private Path writeLiteMod(String modId) throws IOException {

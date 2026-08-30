@@ -26,6 +26,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointRegistry;
 import com.aprism.refract.liteloader.test.LiteModRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * End-to-end proof of the LiteLoader loader-support EXTRACTION: loads the
  * LiteLoader-Support {@code .aep} built by THIS branch through the real
@@ -66,6 +67,8 @@ class LiteLoaderExtractionE2ETest {
     static boolean refractAepPresent() {
         return Files.isRegularFile(REFRACT_AEP);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @BeforeEach
     void setUp() {
@@ -112,6 +115,8 @@ class LiteLoaderExtractionE2ETest {
         assertThat(received).isEqualTo(expected);
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Test
     @EnabledIf("refractAepPresent")
     void extractedHandlerIsIdempotentAndNonInitNoOps() throws Exception {
@@ -140,6 +145,8 @@ class LiteLoaderExtractionE2ETest {
                 StandardCopyOption.REPLACE_EXISTING);
         writeLiteMod(gameRoot.resolve("liteloader-mods/litemod.litemod"), "litemod");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Writes a {@code .litemod} archive containing a {@code litemod.json} and

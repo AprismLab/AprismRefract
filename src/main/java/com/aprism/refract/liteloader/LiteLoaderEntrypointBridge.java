@@ -16,6 +16,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridges LiteLoader mod conventions onto Aprism.
  *
@@ -91,6 +92,8 @@ public final class LiteLoaderEntrypointBridge {
         return result;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Reads a single class file and returns its binary name if it is a
      * LiteLoader entrypoint candidate.
@@ -132,6 +135,8 @@ public final class LiteLoaderEntrypointBridge {
                     + instance.getClass().getName(), cause);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Finds the {@code init(File)} method on the class or any of its
@@ -182,6 +187,8 @@ public final class LiteLoaderEntrypointBridge {
             String simple = name.substring(name.lastIndexOf('/') + 1);
             this.namedLikeLiteMod = simple.startsWith(LITEMOD_CLASS_PREFIX);
         }
+
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
         boolean isMatch() {
             return !isInterfaceOrAbstract && (implementsLiteMod || namedLikeLiteMod);

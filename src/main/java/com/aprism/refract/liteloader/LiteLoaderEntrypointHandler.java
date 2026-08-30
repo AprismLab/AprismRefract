@@ -53,6 +53,8 @@ public final class LiteLoaderEntrypointHandler implements LoaderEntrypointHandle
         return LITELOADER_KEY;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Fully owns LiteLoader dispatch: the Aprism-native {@code IAprismMod}
      * fallback must NOT run afterwards, exactly like the former core built-in
@@ -117,6 +119,8 @@ public final class LiteLoaderEntrypointHandler implements LoaderEntrypointHandle
                     + " failed during INIT: " + e);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Derives the mod's config folder, {@code <gameRoot>/config/<modId>}, the
