@@ -25,7 +25,7 @@ public interface IEventBus {
      * @param consumer the listener invoked when an event of {@code type} is posted
      * @param <T>      the event type
      */
-    <T>     void addListener(Class<T> type, Consumer<T> consumer);
+    <T> void addListener(Class<T> type, Consumer<T> consumer);
 
     //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
