@@ -45,10 +45,13 @@ Aprism 仓库中。
 
 沿用 Aprism 方案（Aprism 仓库 FACT.md 第 5 节）：
 
-- 格式：`v<Year>.<minor>[-Alpha.<n>]`；`v26` = 2026 线，含十个次要版本
-  `v26.0`-`v26.9`；每个次要版本的 Alpha.1-Alpha.9 作为 GitHub
-  Pre-Release；纯数字 = 次要版正式版（GitHub Release）；年度版 `v26.2026`
-  于每年十二月发布。
+- 格式：`v<Year>.<minor>[-Alpha <n>]`；`v26` = 2026 线，含十个次要版本
+  `v26.0`-`v26.9`；每个次要版本的 Alpha 1-Alpha 9 作为 GitHub
+  Pre-Release；纯数字 = 次要版正式版（GitHub Release）；年度版
+  `v26.2026` 于每年十二月发布。
+- Alpha 记法：文档与显示使用空格形式（`v26.9-Alpha 2`）。点式
+  （`v26.9-Alpha.2`）仅用于空格非法的场景：发布标签、产物文件名、命令行
+  参数。清单 SemVer 保持点式小写（`26.9.0-alpha.2`）。
 - 扩展产物命名遵循 Aprism FACT.md 9.14：
   `<Purpose>-A<AprismVerRange>-<LoaderKey><LoaderVerRange>-<MCEdit>-<MCVer>.aep`
   例：`Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep`。
@@ -108,7 +111,7 @@ settings.gradle 中的 `pluginManagement.includeBuild`）。签名提交 +
 - 标签：加载器前缀，`<loader>/v26.9-Alpha.<n>`（正式次要版为
   `<loader>/v26.9`），SSH 签名。加载器前缀用于区分五个加载器分支上的
   同版本标签；版本号本身不加改变地沿用 Aprism 方案。例：
-  `forge/v26.9-Alpha.2`。当前版本线：`v26.9-Alpha.2`（五个签名
+  `forge/v26.9-Alpha.2`。当前版本线：`v26.9-Alpha 2`（五个签名
   Pre-Release，共 32 个 `.aep` 变体）。
 - 产物：`.aep`、`checksums.txt`（SHA-256）、cosign 无密钥签名
   （`.sig` + `.bundle`）、CycloneDX SBOM；Alpha 构建以 GitHub

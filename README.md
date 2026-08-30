@@ -41,10 +41,14 @@ Rules:
 
 Mirrors the Aprism scheme (FACT.md section 5 of the Aprism repository):
 
-- Format: `v<Year>.<minor>[-Alpha.<n>]`; `v26` = the 2026 line with ten
-  minors `v26.0`-`v26.9`; Alpha.1-Alpha.9 per minor as GitHub Pre-Releases;
+- Format: `v<Year>.<minor>[-Alpha <n>]`; `v26` = the 2026 line with ten
+  minors `v26.0`-`v26.9`; Alpha 1-Alpha 9 per minor as GitHub Pre-Releases;
   bare number = minor official (GitHub Release); annual edition `v26.2026`
   each December.
+- Alpha notation: docs and display use the spaced form (`v26.9-Alpha 2`).
+  The dotted form (`v26.9-Alpha.2`) is reserved for contexts where spaces
+  are invalid: release tags, artifact filenames, CLI arguments. Manifest
+  SemVer stays dotted-lowercase (`26.9.0-alpha.2`).
 - Extension artifact naming follows Aprism FACT.md 9.14:
   `<Purpose>-A<AprismVerRange>-<LoaderKey><LoaderVerRange>-<MCEdit>-<MCVer>.aep`
   e.g. `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep`.
@@ -110,7 +114,7 @@ settings.gradle). Signed commits + signed tags are mandatory
   `<loader>/v26.9` for minor officials), SSH-signed. The loader prefix
   disambiguates same-version tags across the five loader branches; the version
   number itself mirrors the Aprism scheme unchanged. Example:
-  `forge/v26.9-Alpha.2`. Current line: `v26.9-Alpha.2` (five signed
+  `forge/v26.9-Alpha.2`. Current line: `v26.9-Alpha 2` (five signed
   Pre-Releases, 32 `.aep` variants total).
 - Artifacts: the `.aep`, `checksums.txt` (SHA-256), cosign keyless signature
   (`.sig` + `.bundle`), CycloneDX SBOM; published as GitHub Pre-Releases for
