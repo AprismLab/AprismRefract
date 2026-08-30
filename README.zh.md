@@ -64,7 +64,7 @@ Aprism 仓库中。
   aprism.extension.json      # extensionId、version、type、aprismRange、
                              # loaderRange、mcEdit、mcVersion、entrypoint、
                              # provides
-  aprismwarp.editor.json     # 可选（自 v26.9-Alpha.2）：AprismWarp 编辑器
+  aprismwarp.editor.json     # 可选（自 v26.9-Alpha 2）：AprismWarp 编辑器
                              # 目录，schema 为 aprismwarp.aep-editor/v1；
                              # 由 AprismWarp 读取，Aprism 运行时忽略
   extension.jar              # 入口类 + 加载器桥接代码
@@ -74,7 +74,7 @@ Aprism 仓库中。
 
 - `extensionId`：如 `fabric-support`
 - `version`：扩展自身版本（如 `26.9.0-alpha.2`），用于依赖范围匹配
-  （自 v26.9-Alpha.2 起）
+  （自 v26.9-Alpha 2 起）
 - `type`：`loader-support`
 - `aprismRange`：本扩展支持的 Aprism 版本 SemVer 范围
   （当前为 `[26.0.0,28.0.0)`）
@@ -126,8 +126,8 @@ settings.gradle 中的 `pluginManagement.includeBuild`）。签名提交 +
 ## 与 Aprism 的关系
 
 - Aprism 核心（agent、类加载器、运行时、Mixin、重映射、打包）保留在
-  Aprism 仓库。自加载器支持抽取（Aprism v26.1-Alpha.6 接缝，于
-  AprismRefract v26.0-Alpha.2 完成）后，核心只交付
+  Aprism 仓库。自加载器支持抽取（Aprism v26.1-Alpha 6 接缝，于
+  AprismRefract v26.0-Alpha 2 完成）后，核心只交付
   `LoaderEntrypointHandler` SPI + 注册表与 Aprism 原生回退实现；不再
   携带任何加载器专属翻译层。
 - 本仓库的每个加载器分支提供自己的翻译层：入口桥接器、加载器 API 垫片
@@ -139,8 +139,8 @@ settings.gradle 中的 `pluginManagement.includeBuild`）。签名提交 +
   （接缝设计）与
   [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
   （规范分工）。
-- 版本对齐：AprismRefract `v26.<minor>-Alpha.<n>` 构建时从同级 Aprism
+- 版本对齐：AprismRefract `v26.<minor>-Alpha <n>` 构建时从同级 Aprism
   检出的 `gradle.properties` 动态解析 Aprism 核心对齐（动态对齐；当前
-  为 Aprism `v26.8-Alpha.8`，由 `aprismRange` `[26.0.0,28.0.0)` 覆盖）。
+  为 Aprism `v26.8-Alpha 8`，由 `aprismRange` `[26.0.0,28.0.0)` 覆盖）。
 
 <!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
