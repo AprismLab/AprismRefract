@@ -6,6 +6,7 @@ LiteLoader) and make them work together.
 
 > Author: BlockConnect@StarsailsClover | License: Apache-2.0
 > Companion repository of [Aprism](https://github.com/NDBlockConnect/Aprism).
+> 简体中文说明：[README.zh.md](README.zh.md)
 
 ## What this repository is
 
@@ -46,30 +47,42 @@ Mirrors the Aprism scheme (FACT.md section 5 of the Aprism repository):
   each December.
 - Extension artifact naming follows Aprism FACT.md 9.14:
   `<Purpose>-A<AprismVerRange>-<LoaderKey><LoaderVerRange>-<MCEdit>-<MCVer>.aep`
-  e.g. `Fabric-Support-A[26.0,27.0)-Fa[0.16,0.17)-JE-1.21.4.aep`.
+  e.g. `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep`.
 - Interface contract: monotonic increment only; deprecation allowed with
   notice; never remove/rename.
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
 
 ## Extension anatomy (loader-support .aep)
 
 ```
 <name>.aep (ZIP)
-  aprism.extension.json      # extensionId, type, aprismRange, loaderRange,
-                             # mcEdit, mcVersion, entrypoint, provides
+  aprism.extension.json      # extensionId, version, type, aprismRange,
+                             # loaderRange, mcEdit, mcVersion, entrypoint,
+                             # provides
+  aprismwarp.editor.json     # OPTIONAL (since v26.9-Alpha.2): AprismWarp
+                             # editor catalog, schema aprismwarp.aep-editor/v1;
+                             # read by AprismWarp, ignored by Aprism runtime
   extension.jar              # entrypoint class + loader bridge code
 ```
 
 `aprism.extension.json` fields (loader-support):
 
-- `extensionId`: e.g. `aprism:fabric-support`
+- `extensionId`: e.g. `fabric-support`
+- `version`: extension version (e.g. `26.9.0-alpha.2`), used for dependency
+  range matching (since v26.9-Alpha.2)
 - `type`: `loader-support`
 - `aprismRange`: SemVer range of Aprism versions this extension supports
+  (currently `[26.0.0,28.0.0)`)
 - `loaderRange`: SemVer range of the target loader runtime (e.g. Fabric
   Loader versions)
 - `mcEdit`: `JE` (BE loader-support does not exist per Aprism 9.16)
-- `mcVersion`: Minecraft version(s) targeted (null = any)
+- `mcVersion`: explicit Minecraft version targeted by this variant (the
+  32-variant build system emits one .aep per MC version; null = any)
 - `entrypoint`: the `IAprismExtension` implementation class name
 - `provides`: capability declarations (optional)
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
 
 At load time the extension's `onInitialize(ExtensionContext)` registers its
 loader key and mod folder via `context.registerLoaderSupport(key, folder)`.
@@ -93,11 +106,12 @@ settings.gradle). Signed commits + signed tags are mandatory
 
 ## Release & signing
 
-- Tags: loader-prefixed, `<loader>/v26.0-Alpha.<n>` (and bare
-  `<loader>/v26.0` for minor officials), SSH-signed. The loader prefix
+- Tags: loader-prefixed, `<loader>/v26.9-Alpha.<n>` (and bare
+  `<loader>/v26.9` for minor officials), SSH-signed. The loader prefix
   disambiguates same-version tags across the five loader branches; the version
   number itself mirrors the Aprism scheme unchanged. Example:
-  `forge/v26.0-Alpha.1`.
+  `forge/v26.9-Alpha.2`. Current line: `v26.9-Alpha.2` (five signed
+  Pre-Releases, 32 `.aep` variants total).
 - Artifacts: the `.aep`, `checksums.txt` (SHA-256), cosign keyless signature
   (`.sig` + `.bundle`), CycloneDX SBOM; published as GitHub Pre-Releases for
   Alpha builds and GitHub Releases for officials.
@@ -121,5 +135,9 @@ settings.gradle). Signed commits + signed tags are mandatory
   [docs/extraction-architecture.md](docs/extraction-architecture.md) for the
   seam design and [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
   for the normative split.
-- Version alignment: an AprismRefract `v26.0-Alpha.<n>` is built against the
-  matching Aprism `v26.0-Alpha.<n>` API surface.
+- Version alignment: an AprismRefract `v26.<minor>-Alpha.<n>` is built against
+  the Aprism core alignment recorded in its `gradle.properties` at build time
+  (dynamic alignment; currently Aprism `v26.8-Alpha.8`, covered by
+  `aprismRange` `[26.0.0,28.0.0)`).
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
