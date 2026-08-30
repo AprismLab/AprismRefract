@@ -24,6 +24,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointRegistry;
 import com.aprism.refract.quilt.test.QuiltRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * End-to-end proof of the Quilt loader-support EXTRACTION: loads the
  * Quilt-Support {@code .aep} built by THIS branch through the real Aprism
@@ -65,6 +66,8 @@ class QuiltExtractionE2ETest {
         return Files.isRegularFile(REFRACT_AEP);
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @BeforeEach
     void setUp() {
         QuiltRecordingMod.resetGlobal();
@@ -104,6 +107,8 @@ class QuiltExtractionE2ETest {
         assertThat(QuiltRecordingMod.getGlobalCalls()).containsExactly("main");
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Test
     @EnabledIf("refractAepPresent")
     void extractedHandlerBridgesClientAndServerPhases() throws Exception {
@@ -132,6 +137,8 @@ class QuiltExtractionE2ETest {
                 StandardCopyOption.REPLACE_EXISTING);
         writeQuiltModJar(gameRoot.resolve("quilt-mods/quiltmod.jar"), "quiltmod");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Writes a Quilt mod jar with a {@code quilt.mod.json} declaring

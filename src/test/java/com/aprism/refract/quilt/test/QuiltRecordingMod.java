@@ -8,6 +8,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Test fixture Quilt mod entrypoint. Quilt loader ships a built-in Fabric API
  * compatibility layer, so a genuine Quilt mod implements
@@ -37,6 +38,8 @@ public final class QuiltRecordingMod implements ModInitializer, ClientModInitial
     public static List<String> getGlobalCalls() {
         return List.copyOf(GLOBAL_CALLS);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Override
     public void onInitialize() {

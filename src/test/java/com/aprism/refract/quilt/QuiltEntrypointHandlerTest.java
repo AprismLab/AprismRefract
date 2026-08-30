@@ -14,6 +14,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.manifest.AprismManifest;
 import com.aprism.refract.quilt.test.QuiltRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for {@link QuiltEntrypointHandler}: SPI contract (loader key,
  * exclusivity) and manifest-driven entrypoint dispatch without a full runtime.
@@ -41,6 +42,8 @@ class QuiltEntrypointHandlerTest {
                 entrypoints, List.of(), Map.of(), Map.of(), null, List.of(), Map.of());
         return new LoadedModContainer(manifest, Path.of("quiltmod.jar"), "Q");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void servesQuiltKeyAndIsExclusive() {

@@ -75,6 +75,8 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
         this.interModComms = interModComms;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Override
     public String loaderKey() {
         return QUILT_KEY;
@@ -117,6 +119,8 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Phase dispatch proper. Runs under the mod-space TCCL.
      */
@@ -149,6 +153,8 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Resolves the entrypoint class names declared for the phase's key.
      *
@@ -180,6 +186,8 @@ public final class QuiltEntrypointHandler implements LoaderEntrypointHandler {
             case SERVER -> "server";
         };
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Dispatches the Aprism-native lifecycle method for a mod that implements

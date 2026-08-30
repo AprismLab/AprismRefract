@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.aprism.api.AprismPhase;
 import com.aprism.refract.quilt.test.QuiltRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for the extracted {@link QuiltEntrypointBridge}: phase-to-method
  * mapping and reflective invocation of Quilt (Fabric-convention) entrypoints.
@@ -30,6 +31,8 @@ class QuiltEntrypointBridgeTest {
         assertThat(QuiltEntrypointBridge.methodNameFor(AprismPhase.SERVER))
                 .isEqualTo("onInitializeServer");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void phasesWithoutQuiltEquivalentMapToNull() {

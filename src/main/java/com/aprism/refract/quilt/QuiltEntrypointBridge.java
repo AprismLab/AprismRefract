@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import com.aprism.api.AprismPhase;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridges Quilt loader entrypoint conventions onto Aprism phase dispatch.
  *
@@ -94,6 +95,8 @@ public final class QuiltEntrypointBridge {
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Finds a no-arg method with the given name on the class or any of its
      * superclasses/interfaces.
@@ -117,6 +120,8 @@ public final class QuiltEntrypointBridge {
         }
         return null;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Searches an interface (and its super-interfaces) for the no-arg method.
