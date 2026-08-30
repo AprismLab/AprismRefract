@@ -21,6 +21,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.manifest.AprismManifest;
 import com.aprism.refract.forge.test.ForgeRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for {@link ForgeEntrypointHandler}: SPI contract (loader key,
  * exclusivity) and the Forge construction model — INIT-only construction,
@@ -43,6 +44,8 @@ class ForgeEntrypointHandlerTest {
         ForgeRecordingMod.resetGlobal();
         handler = new ForgeEntrypointHandler();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void servesForgeKeyAndIsExclusive() {
@@ -97,6 +100,8 @@ class ForgeEntrypointHandlerTest {
                 Map.of(), List.of(), Map.of(), Map.of(), null, List.of(), Map.of());
         return new LoadedModContainer(manifest, jarPath, "Fo");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a mod jar with the real Forge {@code @Mod} class bytes embedded. */
     private Path writeModJar(String modId) throws IOException {

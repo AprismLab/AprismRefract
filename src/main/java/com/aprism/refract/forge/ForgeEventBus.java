@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Implementation of the Forge {@link IEventBus} shim bundled on this branch.
  * Injected into Forge mod constructors so genuine mods can register event
@@ -89,4 +90,6 @@ public final class ForgeEventBus implements IEventBus {
                     .add(wrapper);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 }

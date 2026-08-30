@@ -2,6 +2,7 @@ package net.minecraftforge.eventbus.api;
 
 import java.util.function.Consumer;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Forge API shim: the mod-scoped event bus injected into Forge mod
  * constructors. Bundled with the Forge-Support extension (.aep) so that
@@ -28,6 +29,8 @@ public interface IEventBus {
      * @param <T>      the event type
      */
     <T> void addListener(Class<T> type, Consumer<T> consumer);
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Registers a generic event listener.

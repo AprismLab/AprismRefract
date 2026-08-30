@@ -1,5 +1,6 @@
 package net.minecraftforge.fml.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Forge API shim: fired when all mods have completed their common setup.
  *

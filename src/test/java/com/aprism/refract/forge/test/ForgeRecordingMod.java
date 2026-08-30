@@ -3,6 +3,7 @@ package com.aprism.refract.forge.test;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Test fixture Forge mod entrypoint. Annotated with the Forge {@code @Mod}
  * shim (bundled on this branch) so {@link com.aprism.refract.forge.ForgeEntrypointBridge}
@@ -35,6 +36,8 @@ public final class ForgeRecordingMod {
     public static boolean wasConstructed() {
         return constructed;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Forge constructor with {@link IEventBus} injection.

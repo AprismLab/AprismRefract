@@ -8,6 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Forge-Support Aprism Extension entrypoint (loader-support, loader key
  * {@code Fo}). Registers the {@code forge-mods/} folder so that Aprism
@@ -48,6 +49,7 @@ public final class ForgeSupportExtension implements IAprismExtension {
         // MinecraftForge.EVENT_BUS is the global game-level event bus.
         MinecraftForge.setEventBus(new ForgeEventBus());
 
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
         context.registerLoaderSupport(FORGE_KEY, FORGE_MODS_FOLDER);
         // Own the Forge entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Fo".

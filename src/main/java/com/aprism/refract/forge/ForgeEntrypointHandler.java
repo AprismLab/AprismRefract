@@ -95,6 +95,8 @@ public final class ForgeEntrypointHandler implements LoaderEntrypointHandler {
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Phase dispatch proper. Runs under the mod-space TCCL.
      */
@@ -154,6 +156,8 @@ public final class ForgeEntrypointHandler implements LoaderEntrypointHandler {
             fireLifecycleEvent(container, lifecycleEvent);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Fires a lifecycle event through the mod's retained event bus.

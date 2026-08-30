@@ -17,6 +17,7 @@ import org.objectweb.asm.Opcodes;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridges Forge (legacy FML) loader conventions onto Aprism.
  *
@@ -88,6 +89,8 @@ public final class ForgeEntrypointBridge {
         return result;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Reads a single class file and returns its binary name if it carries a
      * Forge {@code @Mod} annotation whose value matches {@code modId}.
@@ -106,6 +109,8 @@ public final class ForgeEntrypointBridge {
             return null;
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Instantiates a Forge entrypoint class, injecting the given event bus.
@@ -133,6 +138,8 @@ public final class ForgeEntrypointBridge {
                     + clazz.getName(), cause);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * ASM visitor that detects a runtime-visible Forge {@code @Mod} annotation

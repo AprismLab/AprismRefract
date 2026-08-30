@@ -25,6 +25,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointRegistry;
 import com.aprism.refract.forge.test.ForgeRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * End-to-end proof of the Forge loader-support EXTRACTION: loads the
  * Forge-Support {@code .aep} built by THIS branch through the real Aprism
@@ -64,6 +65,8 @@ class ForgeExtractionE2ETest {
     static boolean refractAepPresent() {
         return Files.isRegularFile(REFRACT_AEP);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @BeforeEach
     void setUp() {
@@ -110,6 +113,8 @@ class ForgeExtractionE2ETest {
         assertThat(bus).as("IEventBus injected at construction").isNotNull();
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Test
     @EnabledIf("refractAepPresent")
     void extractedHandlerIsIdempotentAndNonInitNoOps() throws Exception {
@@ -138,6 +143,8 @@ class ForgeExtractionE2ETest {
                 StandardCopyOption.REPLACE_EXISTING);
         writeForgeModJar(gameRoot.resolve("forge-mods/forgemod.jar"), "forgemod");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Writes a Forge mod jar containing a {@code META-INF/mods.toml} and the

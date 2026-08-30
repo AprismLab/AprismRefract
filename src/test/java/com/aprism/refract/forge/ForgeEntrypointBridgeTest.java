@@ -18,6 +18,7 @@ import com.aprism.refract.forge.test.ForgeRecordingMod;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for the extracted {@link ForgeEntrypointBridge}: bytecode
  * scanning for Forge {@code @Mod} entrypoints and constructor injection of
@@ -62,6 +63,8 @@ class ForgeEntrypointBridgeTest {
         Object instance = ForgeEntrypointBridge.construct(Object.class, new ForgeEventBus());
         assertThat(instance).isNotNull();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a mod jar with the real Forge {@code @Mod} class bytes embedded. */
     private Path writeModJar(String modId) throws IOException {

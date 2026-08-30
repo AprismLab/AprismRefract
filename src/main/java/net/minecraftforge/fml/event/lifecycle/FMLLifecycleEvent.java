@@ -1,5 +1,6 @@
 package net.minecraftforge.fml.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Forge API shim: base class for mod lifecycle events. Lifecycle events
  * are fired through the mod-scoped {@code IEventBus} during the Aprism
