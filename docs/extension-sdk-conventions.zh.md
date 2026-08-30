@@ -179,7 +179,8 @@ AprismRefract 构建在构建时从同级 Aprism 检出的 `gradle.properties` �
 | 2026-08-09 | main 上创建初始 SDK 规范文档。明确入口桥接器与加载器 API 垫片位于 Aprism `aprism-loader-core`，`.aep` 入口类与清单位于本仓库加载器分支。 |
 | 2026-08-09 | 将第 3 节加载器注册表细化到已实现约定：Forge 分节感知 `mods.toml`（遵守 `mandatory`）+ IEventBus 构造注入；Quilt `quilt_loader` 块 `init` -> `main` 投影与 Fabric 兼容分发（Quilt 内置 Fabric API 兼容层）；LiteLoader `LiteMod` 接口发现 + `init(File)`。五个加载器分支均已开发。 |
 | 2026-08-28 | 采纳 AprismWarp 编辑器目录扩展：可选根级 `aprismwarp.editor.json`（`aprismwarp.aep-editor/v1`）；新增扩展自版本指引与打包 DSL 约定。 |
-| 2026-08-28 | 第 4a 节加入 v26.9-Alpha.2 AEP 格式适配：每个分支的每个 AEP 变体必须携带编辑器目录，`aprismRange` 须匹配 Aprism v26.8，扩展清单须声明 `version` 字段。32/32 变体结构验证通过；经 workflow_dispatch 发布五个 Pre-Release。 |
+| 2026-08-28 | 第 4a 节加入 `v26.9-Alpha 2` AEP 格式适配：每个分支的每个 AEP 变体必须携带编辑器目录，`aprismRange` 须匹配 Aprism v26.8，扩展清单须声明 `version` 字段。32/32 变体结构验证通过；经 workflow_dispatch 发布五个 Pre-Release。 |
 | 2026-08-28 | 严格审计整改：第 4 节模板更新至交付现实（`version` 26.9.0-alpha.2、`aprismRange` [26.0.0,28.0.0)、显式 `mcEdit`/`mcVersion`）；将过期的无前缀标签方案替换为加载器前缀方案；第 8 节改写为动态 Aprism 核心对齐（基于范围的契约，非版本配对）。 |
+| 2026-08-28 | 规范 Alpha 记法：文档/显示使用空格形式 `v26.9-Alpha 2`；点式仅用于发布标签、产物文件名与命令行；清单 SemVer 保持 `26.9.0-alpha.2`。已在本地 allowed signers 登记实际 `aprism_signing` 密钥，修复 SSH 签名身份归属。 |
 
 <!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
