@@ -166,7 +166,7 @@ CycloneDX SBOM，以 Pre-Release 发布。
 AprismRefract 构建在构建时从同级 Aprism 检出的 `gradle.properties` 动态
 解析 Aprism 核心对齐。清单声明的 `aprismRange`（当前
 `[26.0.0,28.0.0)`）覆盖分支构建所对齐的 Aprism 核心线（当前 Aprism
-`v26.8-Alpha.8`）。Refract 次要版本可以领先核心次要版本；兼容性契约是
+`v26.8-Alpha 8`）。Refract 次要版本可以领先核心次要版本；兼容性契约是
 范围，而非版本配对规则。若 Aprism 核心的扩展/加载器支持契约发生不兼容
 变更，提升 `aprismRange` 并在 FACT.md 记录。
 
