@@ -3,6 +3,7 @@ package com.aprism.refract.neoforge.test;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Test fixture NeoForge mod entrypoint. Annotated with the NeoForge {@code @Mod}
  * shim (bundled on this branch) so {@link com.aprism.refract.neoforge.NeoForgeEntrypointBridge}
@@ -35,6 +36,8 @@ public final class NeoForgeRecordingMod {
     public static boolean wasConstructed() {
         return constructed;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * NeoForge constructor with {@link IEventBus} injection.

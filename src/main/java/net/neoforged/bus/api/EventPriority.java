@@ -1,5 +1,6 @@
 package net.neoforged.bus.api;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: event priority enum. Controls the order in which
  * event listeners are invoked.

@@ -1,5 +1,6 @@
 package net.neoforged.fml.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 

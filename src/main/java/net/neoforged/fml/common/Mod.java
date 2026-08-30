@@ -1,5 +1,6 @@
 package net.neoforged.fml.common;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

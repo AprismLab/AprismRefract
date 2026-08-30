@@ -1,5 +1,6 @@
 package net.neoforged.fml.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: fired during the client setup phase. Mods use this
  * event to register client-only content such as renderers, key bindings,

@@ -66,6 +66,8 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
         return NEOFORGE_KEY;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Fully owns NeoForge dispatch: the Aprism-native {@code IAprismMod}
      * fallback must NOT run afterwards, exactly like the former core built-in
@@ -91,6 +93,8 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
             current.setContextClassLoader(previousTccl);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Phase dispatch proper. Runs under the mod-space TCCL.
@@ -180,6 +184,8 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Fires a lifecycle event through the mod's event bus. The event bus is
      * the same instance that was injected into the mod constructor.
@@ -202,6 +208,8 @@ public final class NeoForgeEntrypointHandler implements LoaderEntrypointHandler 
             bus.post(event);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Per-container event bus reference, keyed by mod container identity. */
     private static final java.util.Map<LoadedModContainer, NeoForgeEventBus> BUS_MAP

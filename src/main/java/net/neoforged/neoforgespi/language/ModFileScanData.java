@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.objectweb.asm.Type;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge SPI shim: per-mod annotation scan result. Under Aprism the scan
  * is performed by the loader-support extension itself (ASM pass over the
@@ -68,6 +69,8 @@ public abstract class ModFileScanData {
          */
         public abstract Map<String, Object> annotationData();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Kind of program element carrying an annotation.

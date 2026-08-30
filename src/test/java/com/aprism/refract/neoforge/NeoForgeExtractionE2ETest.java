@@ -25,6 +25,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointRegistry;
 import com.aprism.refract.neoforge.test.NeoForgeRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * End-to-end proof of the NeoForge loader-support EXTRACTION: loads the
  * NeoForge-Support {@code .aep} built by THIS branch through the real Aprism
@@ -65,6 +66,8 @@ class NeoForgeExtractionE2ETest {
     static boolean refractAepPresent() {
         return Files.isRegularFile(REFRACT_AEP);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @BeforeEach
     void setUp() {
@@ -112,6 +115,8 @@ class NeoForgeExtractionE2ETest {
         assertThat(bus).as("IEventBus injected at construction").isNotNull();
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Test
     @EnabledIf("refractAepPresent")
     void extractedHandlerIsIdempotentAndNonInitNoOps() throws Exception {
@@ -145,6 +150,8 @@ class NeoForgeExtractionE2ETest {
         // A genuine NeoForge-style mod in neoforge-mods/ (with real @Mod bytes)
         writeNeoForgeModJar(gameRoot.resolve("neoforge-mods/neoforgemod.jar"), "neoforgemod");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Writes a NeoForge mod jar containing a {@code META-INF/neoforge.mods.toml}

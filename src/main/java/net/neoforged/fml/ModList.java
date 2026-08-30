@@ -3,6 +3,7 @@ package net.neoforged.fml;
 import java.nio.file.Path;
 import java.util.List;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: the loaded-mod list facade. Mods query {@code ModList.get().isLoaded(id)}
  * for inter-mod presence checks. Under Aprism answers come from the ids
@@ -55,6 +56,8 @@ public final class ModList {
     public List<String> getLoadedMods() {
         return loadedIds;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Returns annotation scan data across all mod files. Under v26.8+ this

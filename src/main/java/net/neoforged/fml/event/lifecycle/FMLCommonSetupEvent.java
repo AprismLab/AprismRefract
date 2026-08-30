@@ -1,5 +1,6 @@
 package net.neoforged.fml.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: fired during the common setup phase. Mods use this
  * event to register common (side-agnostic) game content such as items,

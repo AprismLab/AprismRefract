@@ -1,5 +1,6 @@
 package net.neoforged.fml.event;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: marker interface for mod-bus events. The real FML uses
  * it to validate that an event type belongs on the mod-scoped bus; under

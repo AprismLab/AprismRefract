@@ -1,5 +1,6 @@
 package net.neoforged.neoforge.common;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 import net.neoforged.bus.api.IEventBus;
 
 /**

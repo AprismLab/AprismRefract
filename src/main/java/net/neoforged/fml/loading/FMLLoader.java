@@ -1,5 +1,6 @@
 package net.neoforged.fml.loading;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: static loader utilities. Only the members commonly
  * probed by mods are provided; everything answers inert defaults.

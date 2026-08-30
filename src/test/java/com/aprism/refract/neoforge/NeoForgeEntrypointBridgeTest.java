@@ -18,6 +18,7 @@ import com.aprism.refract.neoforge.test.NeoForgeRecordingMod;
 
 import net.neoforged.bus.api.IEventBus;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for the extracted {@link NeoForgeEntrypointBridge}: bytecode
  * scanning for {@code @Mod} entrypoints and constructor injection of the
@@ -65,6 +66,8 @@ class NeoForgeEntrypointBridgeTest {
         Object instance = NeoForgeEntrypointBridge.construct(Object.class, new NeoForgeEventBus());
         assertThat(instance).isNotNull();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a mod jar with the real {@code @Mod} class bytes embedded. */
     private Path writeModJar(String modId) throws IOException {

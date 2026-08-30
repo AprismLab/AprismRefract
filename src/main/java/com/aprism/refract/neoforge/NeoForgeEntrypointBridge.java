@@ -17,6 +17,7 @@ import org.objectweb.asm.Opcodes;
 
 import net.neoforged.bus.api.IEventBus;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridges NeoForge loader conventions onto Aprism.
  *
@@ -88,6 +89,8 @@ public final class NeoForgeEntrypointBridge {
         return result;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Reads a single class file and returns its binary name if it carries a
      * {@code @Mod} annotation whose value matches {@code modId}.
@@ -106,6 +109,8 @@ public final class NeoForgeEntrypointBridge {
             return null;
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Instantiates a NeoForge entrypoint class, injecting the given event bus.
@@ -145,6 +150,8 @@ public final class NeoForgeEntrypointBridge {
                     + clazz.getName(), cause);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * ASM visitor that detects a runtime-visible {@code @Mod} annotation and

@@ -1,5 +1,6 @@
 package net.neoforged.neoforge.registries;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 import java.util.function.Supplier;
 
 /**

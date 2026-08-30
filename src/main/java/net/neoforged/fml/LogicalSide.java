@@ -1,5 +1,6 @@
 package net.neoforged.fml;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: logical side enum. Used by mods to distinguish client
  * from server execution at runtime.

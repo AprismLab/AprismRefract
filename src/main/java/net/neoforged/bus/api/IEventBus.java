@@ -2,6 +2,7 @@ package net.neoforged.bus.api;
 
 import java.util.function.Consumer;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: the mod-scoped event bus injected into NeoForge mod
  * constructors. Bundled with the NeoForge-Support extension (.aep) so that
@@ -24,7 +25,9 @@ public interface IEventBus {
      * @param consumer the listener invoked when an event of {@code type} is posted
      * @param <T>      the event type
      */
-    <T> void addListener(Class<T> type, Consumer<T> consumer);
+    <T>     void addListener(Class<T> type, Consumer<T> consumer);
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Registers an event listener with the receiveCancelled flag (NeoForge

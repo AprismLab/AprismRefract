@@ -2,6 +2,7 @@ package net.neoforged.fml;
 
 import net.neoforged.fml.config.ModConfig;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: the mod loading context handed to mods for container
  * operations. The real FML provides one context per active mod; this shim
@@ -44,6 +45,8 @@ public final class ModLoadingContext {
     public ModContainer getActiveContainer() {
         return new ModContainer(activeModId);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     private static final class Holder {
         private Holder() {

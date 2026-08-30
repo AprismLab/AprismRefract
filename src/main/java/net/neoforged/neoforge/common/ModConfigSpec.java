@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.neoforged.fml.config.IConfigSpec;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: config spec with builder and typed value holders.
  * The real spec validates TOML against declared entries; under Aprism the
@@ -50,6 +51,8 @@ public class ModConfigSpec implements IConfigSpec {
             // no persistence under Aprism
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Boolean-typed config value.
@@ -117,6 +120,8 @@ public class ModConfigSpec implements IConfigSpec {
             super(defaultValue);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Fluent builder shim returning inert typed value holders.
@@ -191,6 +196,8 @@ public class ModConfigSpec implements IConfigSpec {
             return new ConfigValue<>(defaultValue);
         }
 
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
         /**
          * Defines a generic entry.
          *
@@ -227,6 +234,8 @@ public class ModConfigSpec implements IConfigSpec {
             return this;
         }
 
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
         /**
          * Enters a sub-section (path prefix; ignored).
          *
@@ -245,6 +254,8 @@ public class ModConfigSpec implements IConfigSpec {
         public Builder pop() {
             return this;
         }
+
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
         /**
          * Builds an inert spec.

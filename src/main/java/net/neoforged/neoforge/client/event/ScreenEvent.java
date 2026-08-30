@@ -2,6 +2,7 @@ package net.neoforged.neoforge.client.event;
 
 import net.neoforged.bus.api.Event;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: screen interaction events. Marker hierarchy only;
  * Aprism does not hook the screen stack.
@@ -25,6 +26,8 @@ public abstract class ScreenEvent extends Event {
         public static final class Post extends Init {
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Character typed events. */
     public static abstract class CharacterTyped extends ScreenEvent {
@@ -61,6 +64,8 @@ public abstract class ScreenEvent extends Event {
         public static final class Post extends MouseButtonPressed {
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Mouse button released events. */
     public static abstract class MouseButtonReleased extends ScreenEvent {

@@ -1,5 +1,6 @@
 package net.neoforged.fml.config;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: marker interface for config specs. The real interface
  * carries validation and reload contracts; under Aprism it exists only so

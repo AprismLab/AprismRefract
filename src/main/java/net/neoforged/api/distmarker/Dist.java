@@ -1,5 +1,6 @@
 package net.neoforged.api.distmarker;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: distribution side enum with side predicates. Many
  * NeoForge mods reference {@code Dist.CLIENT} / {@code Dist.DEDICATED_SERVER}

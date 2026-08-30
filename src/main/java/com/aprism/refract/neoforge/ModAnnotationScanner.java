@@ -25,6 +25,7 @@ import net.neoforged.neoforgespi.language.ModFileScanData.TargetType;
 import net.neoforged.neoforgespi.language.ImmutableScanData;
 import net.neoforged.neoforgespi.language.ImmutableScanData.Data;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * ASM-based annotation scanner producing real {@link ModFileScanData} for a
  * mod archive (v26.8-Alpha.1). Walks every class file in the mod jar and
@@ -70,6 +71,8 @@ public final class ModAnnotationScanner {
         return new ImmutableScanData(found);
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Reads one class file and adds every runtime-visible class annotation.
      */
@@ -82,6 +85,8 @@ public final class ModAnnotationScanner {
             // Unreadable single class: skip, do not fail the whole scan.
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Visitor capturing every runtime-visible class-level annotation.

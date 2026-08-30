@@ -1,5 +1,6 @@
 package net.neoforged.bus.api;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: base class for bus events. Mods that define or consume
  * custom event hierarchies extend this. Under Aprism only cancellation

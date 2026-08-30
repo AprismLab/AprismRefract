@@ -21,6 +21,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.manifest.AprismManifest;
 import com.aprism.refract.neoforge.test.NeoForgeRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for {@link NeoForgeEntrypointHandler}: SPI contract (loader key,
  * exclusivity) and the NeoForge construction model — INIT-only construction,
@@ -43,6 +44,8 @@ class NeoForgeEntrypointHandlerTest {
         NeoForgeRecordingMod.resetGlobal();
         handler = new NeoForgeEntrypointHandler();
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void servesNeoForgeKeyAndIsExclusive() {
@@ -98,6 +101,8 @@ class NeoForgeEntrypointHandlerTest {
                 Map.of(), List.of(), Map.of(), Map.of(), null, List.of(), Map.of());
         return new LoadedModContainer(manifest, jarPath, "N");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /** Writes a mod jar with the real {@code @Mod} class bytes embedded. */
     private Path writeModJar(String modId) throws IOException {

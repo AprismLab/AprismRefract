@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Implementation of the NeoForge {@link IEventBus} shim bundled on this
  * branch. Injected into NeoForge mod constructors so genuine mods can register
@@ -89,4 +90,6 @@ public final class NeoForgeEventBus implements IEventBus {
                     .add(wrapper);
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 }

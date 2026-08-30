@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 
 import net.neoforged.bus.api.IEventBus;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge API shim: deferred registry helper (MC-typed variant, compiled
  * only against a local unobfuscated client jar - see build.gradle). Provides
@@ -72,6 +73,8 @@ public class DeferredRegister<T> {
     public void register(IEventBus bus) {
         // no-op: attachment handled by Aprism's registry machinery
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * @return recorded entry count (diagnostics)

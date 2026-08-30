@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.objectweb.asm.Type;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Immutable {@link ModFileScanData} implementation produced by the
  * AprismRefract annotation scanner.
@@ -27,6 +28,8 @@ public final class ImmutableScanData extends ModFileScanData {
     public Set<AnnotationData> getAnnotations() {
         return annotations;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Immutable {@link AnnotationData} entry for one discovered annotation.

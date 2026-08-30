@@ -8,6 +8,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * NeoForge-Support Aprism Extension entrypoint (loader-support, loader key
  * {@code N}). Registers the {@code neoforge-mods/} folder so that Aprism
@@ -55,6 +56,7 @@ public final class NeoForgeSupportExtension implements IAprismExtension {
         // a shared bus instance backed by the Aprism event bus.
         NeoForge.setEventBus(new NeoForgeEventBus());
 
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
         context.registerLoaderSupport(NEOFORGE_KEY, NEOFORGE_MODS_FOLDER);
         // Own the NeoForge entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "N".

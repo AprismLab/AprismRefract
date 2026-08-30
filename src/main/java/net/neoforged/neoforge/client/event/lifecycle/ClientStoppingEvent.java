@@ -1,5 +1,6 @@
 package net.neoforged.neoforge.client.event.lifecycle;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 import net.neoforged.bus.api.Event;
 
 /**
