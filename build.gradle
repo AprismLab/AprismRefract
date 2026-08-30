@@ -16,6 +16,8 @@ plugins {
     id 'com.aprism.packaging'
 }
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
 // Project-level repositories. Declared here because a machine-wide Gradle
 // init script injects mavenLocal() into every project, which makes Gradle
 // ignore the settings-level dependencyResolutionManagement repositories.
@@ -28,6 +30,8 @@ repositories {
 
 group = 'com.aprism.refract'
 version = 'v26.9-Alpha.2'
+
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
 // The Aprism build this extension aligns with (compile-time API surface).
 // Resolved dynamically from the Aprism workspace's gradle.properties so the
@@ -79,6 +83,8 @@ test {
     useJUnitPlatform()
 }
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
 // The Aprism packaging plugin registers packageAep. We configure it to bundle
 // this extension's jar and the aprism.extension.json manifest.
 aprismPackaging {
@@ -120,6 +126,8 @@ packageAep {
     manifestFile = file('aprism.extension.json')
     outputFile = file("build/aprism/Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep")
 }
+
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
 // Aggregate task to generate all variant manifests and package all .aep files.
 tasks.register('packageAllAeps') {

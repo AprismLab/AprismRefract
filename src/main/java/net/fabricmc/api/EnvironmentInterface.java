@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Fabric API shim: declares that a type implements an interface only on a
  * specific environment side. No-op marker under Aprism; allows classes using

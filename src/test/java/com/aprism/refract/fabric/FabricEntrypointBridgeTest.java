@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.aprism.api.AprismPhase;
 import com.aprism.refract.fabric.test.FabricRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for the extracted {@link FabricEntrypointBridge}: phase-to-method
  * mapping and reflective invocation of Fabric-convention entrypoints.
@@ -30,6 +31,8 @@ class FabricEntrypointBridgeTest {
         assertThat(FabricEntrypointBridge.methodNameFor(AprismPhase.SERVER))
                 .isEqualTo("onInitializeServer");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void phasesWithoutFabricEquivalentMapToNull() {

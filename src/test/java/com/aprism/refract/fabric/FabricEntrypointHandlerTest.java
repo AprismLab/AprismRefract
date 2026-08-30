@@ -14,6 +14,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.manifest.AprismManifest;
 import com.aprism.refract.fabric.test.FabricRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Unit tests for {@link FabricEntrypointHandler}: SPI contract (loader key,
  * exclusivity) and manifest-driven entrypoint dispatch without a full runtime.
@@ -39,6 +40,8 @@ class FabricEntrypointHandlerTest {
                 entrypoints, List.of(), Map.of(), Map.of(), null, List.of(), Map.of());
         return new LoadedModContainer(manifest, Path.of("fabricmod.jar"), "Fa");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Test
     void servesFabricKeyAndIsExclusive() {

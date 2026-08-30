@@ -6,6 +6,7 @@ import com.aprism.api.IAprismExtension;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Fabric-Support Aprism Extension entrypoint (loader-support, loader key
  * {@code Fa}). Registers the {@code fabric-mods/} folder so that Aprism
@@ -44,6 +45,7 @@ public final class FabricSupportExtension implements IAprismExtension {
         // FMLEnvironment-style configuration in a future alpha.
         FabricBridge.configureEnvironment(EnvType.CLIENT);
 
+        //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
         context.registerLoaderSupport(FABRIC_KEY, FABRIC_MODS_FOLDER);
         // Own the Fabric entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "Fa".

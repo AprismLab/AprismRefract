@@ -78,6 +78,8 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
         this.interModComms = interModComms;
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Override
     public String loaderKey() {
         return FABRIC_KEY;
@@ -92,6 +94,8 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
     public boolean isExclusive() {
         return true;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     // GitHub@NDBlockConnect | BlockConnect@StarsailsClover
     @Override
@@ -154,6 +158,8 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
         }
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     /**
      * Resolves the entrypoint class names declared for the phase's key.
      *
@@ -184,6 +190,8 @@ public final class FabricEntrypointHandler implements LoaderEntrypointHandler {
             case SERVER -> "server";
         };
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Dispatches the Aprism-native lifecycle method for a mod that implements

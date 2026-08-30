@@ -8,6 +8,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Test fixture Fabric mod implementing the Fabric entrypoint interfaces (via
  * the branch-bundled shim). Records every Fabric-convention entrypoint
@@ -34,6 +35,8 @@ public final class FabricRecordingMod implements ModInitializer, ClientModInitia
     public static List<String> getGlobalCalls() {
         return List.copyOf(GLOBAL_CALLS);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @Override
     public void onInitialize() {

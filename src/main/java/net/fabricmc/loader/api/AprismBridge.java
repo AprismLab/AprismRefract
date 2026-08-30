@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.fabricmc.api.EnvType;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Internal bridge between the Fabric Loader API shim and the Aprism runtime
  * state. Public so the {@code com.aprism.refract.fabric} classes on the same
@@ -42,6 +43,8 @@ public final class AprismBridge {
             modIds = next;
         }
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     static EnvType environmentType() {
         return envType;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.fabricmc.api.EnvType;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Fabric Loader API shim: the central loader facade. Many Fabric mods call
  * {@code FabricLoader.getInstance()} during initialization to query the
@@ -53,6 +54,8 @@ public interface FabricLoader {
      */
     java.util.Collection<String> getAllMods();
 }
+
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
 final class InstanceHolder {
     private InstanceHolder() {

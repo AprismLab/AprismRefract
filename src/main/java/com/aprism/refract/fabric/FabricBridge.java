@@ -3,6 +3,7 @@ package com.aprism.refract.fabric;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.AprismBridge;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridge between the Fabric-Support extension and the Fabric Loader API
  * shim. Configures the environment type during extension initialization and

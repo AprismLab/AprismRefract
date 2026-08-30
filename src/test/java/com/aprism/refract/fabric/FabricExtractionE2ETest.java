@@ -25,6 +25,7 @@ import com.aprism.loader.LoadedModContainer;
 import com.aprism.loader.loaderext.LoaderEntrypointRegistry;
 import com.aprism.refract.fabric.test.FabricRecordingMod;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * End-to-end proof of the Fabric loader-support EXTRACTION: loads the
  * Fabric-Support {@code .aep} built by THIS branch through the real Aprism
@@ -63,6 +64,8 @@ class FabricExtractionE2ETest {
     static boolean refractAepPresent() {
         return Files.isRegularFile(REFRACT_AEP);
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     @BeforeEach
     void setUp() {
@@ -112,6 +115,8 @@ class FabricExtractionE2ETest {
         assertThat(FabricRecordingMod.getGlobalCalls()).containsExactly("main");
     }
 
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
+
     @Test
     @EnabledIf("refractAepPresent")
     void extractedHandlerBridgesClientAndServerPhases() throws Exception {
@@ -136,6 +141,8 @@ class FabricExtractionE2ETest {
         runtime.invokeEntrypoints(AprismPhase.SERVER);
         assertThat(FabricRecordingMod.getGlobalCalls()).containsExactly("server");
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     private static void writeFabricModJar(Path jarFile, String id) throws IOException {
         Files.createDirectories(jarFile.getParent());

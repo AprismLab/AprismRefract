@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import com.aprism.api.AprismPhase;
 
+//GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 /**
  * Bridges Fabric loader entrypoint conventions onto Aprism phase dispatch.
  *
@@ -46,6 +47,8 @@ public final class FabricEntrypointBridge {
 
     private FabricEntrypointBridge() {
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Maps an Aprism phase to the Fabric entrypoint method name to invoke.
@@ -116,6 +119,8 @@ public final class FabricEntrypointBridge {
         }
         return null;
     }
+
+    //GitHub@NDBlockConnect | BlockConnect@StarsailsClover
 
     /**
      * Searches an interface (and its super-interfaces) for the no-arg method.
