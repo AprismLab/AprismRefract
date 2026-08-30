@@ -64,7 +64,7 @@ Mirrors the Aprism scheme (FACT.md section 5 of the Aprism repository):
   aprism.extension.json      # extensionId, version, type, aprismRange,
                              # loaderRange, mcEdit, mcVersion, entrypoint,
                              # provides
-  aprismwarp.editor.json     # OPTIONAL (since v26.9-Alpha.2): AprismWarp
+  aprismwarp.editor.json     # OPTIONAL (since v26.9-Alpha 2): AprismWarp
                              # editor catalog, schema aprismwarp.aep-editor/v1;
                              # read by AprismWarp, ignored by Aprism runtime
   extension.jar              # entrypoint class + loader bridge code
@@ -74,7 +74,7 @@ Mirrors the Aprism scheme (FACT.md section 5 of the Aprism repository):
 
 - `extensionId`: e.g. `fabric-support`
 - `version`: extension version (e.g. `26.9.0-alpha.2`), used for dependency
-  range matching (since v26.9-Alpha.2)
+  range matching (since v26.9-Alpha 2)
 - `type`: `loader-support`
 - `aprismRange`: SemVer range of Aprism versions this extension supports
   (currently `[26.0.0,28.0.0)`)
@@ -128,7 +128,7 @@ settings.gradle). Signed commits + signed tags are mandatory
 
 - Aprism core (agent, classloader, runtime, Mixin, remap, packaging) stays in
   the Aprism repository. Since the loader-support extraction (Aprism
-  v26.1-Alpha.6 seam, completed at AprismRefract v26.0-Alpha.2) the core ships
+  v26.1-Alpha 6 seam, completed at AprismRefract v26.0-Alpha 2) the core ships
   only the `LoaderEntrypointHandler` SPI + registry and the Aprism-native
   fallback; it no longer carries any loader-specific translation.
 - Each loader branch here supplies its OWN translation layer: the entrypoint
@@ -139,9 +139,9 @@ settings.gradle). Signed commits + signed tags are mandatory
   [docs/extraction-architecture.md](docs/extraction-architecture.md) for the
   seam design and [docs/extension-sdk-conventions.md](docs/extension-sdk-conventions.md)
   for the normative split.
-- Version alignment: an AprismRefract `v26.<minor>-Alpha.<n>` is built against
+- Version alignment: an AprismRefract `v26.<minor>-Alpha <n>` is built against
   the Aprism core alignment recorded in its `gradle.properties` at build time
-  (dynamic alignment; currently Aprism `v26.8-Alpha.8`, covered by
+  (dynamic alignment; currently Aprism `v26.8-Alpha 8`, covered by
   `aprismRange` `[26.0.0,28.0.0)`).
 
 <!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
