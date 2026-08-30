@@ -2,6 +2,7 @@
 
 > AprismRefract shared document | lives on `main`, consumed by all loader branches
 > Canonical language: English
+> 简体中文：[extension-sdk-conventions.zh.md](extension-sdk-conventions.zh.md)
 > Tracks the Aprism core `.aep` contract. If the Aprism core contract changes,
 > update THIS document first, then propagate to loader branches.
 
@@ -55,18 +56,20 @@ document the deviation here.
 Keys and folders are reserved per Aprism FACT.md 9.14. Do not introduce new
 keys without updating Aprism `ModDiscoverer` and this table together.
 
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
+
 ## 4. Extension manifest (`aprism.extension.json`) template
 
 ```json
 {
   "extensionId": "<loader>-support",
-  "version": "26.9.0-alpha.1",
+  "version": "26.9.0-alpha.2",
   "type": "loader-support",
-  "aprismRange": "[26.0.0,27.0.0)",
+  "aprismRange": "[26.0.0,28.0.0)",
   "loaderKey": "<Key>",
   "loaderRange": "[<loaderMin>,<loaderMax>)",
-  "mcEdit": null,
-  "mcVersion": null,
+  "mcEdit": "JE",
+  "mcVersion": "<mcVer>",
   "entrypoint": "com.aprism.refract.<loader>.<Loader>SupportExtension",
   "provides": ["<loader>-loader"],
   "depends": {}
@@ -97,7 +100,7 @@ second root-level file named `aprismwarp.editor.json`:
 {
   "schema": "aprismwarp.aep-editor/v1",
   "extensionId": "<loader>-support",
-  "version": "26.9.0-alpha.1",
+  "version": "26.9.0-alpha.2",
   "requires": {
     "aprismRange": ">=26.8.0",
     "workTypes": ["AprismExtension"]
@@ -162,18 +165,26 @@ Rules:
 
 Per Aprism FACT.md 9.14:
 `<Purpose>-A<AprismVerRange>-<LoaderKey><LoaderVerRange>-<MCEdit>-<MCVer>.aep`
-e.g. `Fabric-Support-A[26.0,27.0)-Fa[0.16,0.17)-JE-1.21.4.aep`.
+e.g. `Fabric-Support-A[26.0,28.0)-Fa[0.16.0,0.20.0)-JE-26.2.aep`.
 
-Release flow mirrors Aprism: SSH-signed tag `v26.0-Alpha.<n>`, GitHub workflow
-builds the `.aep`, signs with cosign keyless, attaches `checksums.txt` +
-`.sig` + `.bundle` + CycloneDX SBOM, publishes as a Pre-Release.
+Release flow mirrors Aprism: SSH-signed tag `<loader>/v26.9-Alpha.<n>`
+(loader-prefixed to disambiguate same-version tags across the five branches),
+GitHub workflow builds all `.aep` variants, signs each with cosign keyless,
+attaches `checksums.txt` + `.sig` + `.bundle` + CycloneDX SBOM, publishes as
+a Pre-Release.
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
 
 ## 8. Version alignment rule
 
-An AprismRefract build at `v26.0-Alpha.<n>` is built against the Aprism core
-`v26.0-Alpha.<n>` API surface. If Aprism core's extension/loader-support
-contract changes, bump the AprismRefract minor or Alpha to re-align and note it
-in FACT.md.
+An AprismRefract build resolves its Aprism core alignment dynamically from
+the sibling Aprism checkout's `gradle.properties` at build time. The
+`aprismRange` declared in manifests (currently `[26.0.0,28.0.0)`) covers the
+Aprism core line the branches are built against (currently Aprism
+`v26.8-Alpha.8`). Refract minor versions may run ahead of the core minor; the
+range, not a version-pairing rule, is the compatibility contract. If Aprism
+core's extension/loader-support contract changes incompatibly, bump
+`aprismRange` and note it in FACT.md.
 
 ## 9. Change log
 
@@ -183,3 +194,6 @@ in FACT.md.
 | 2026-08-09 | Refined the Section 3 loader registry to the exact implemented conventions: Forge section-aware `mods.toml` (honors `mandatory`) + IEventBus constructor injection; Quilt `quilt_loader` block with `init` -> `main` projection and Fabric-compatible dispatch (Quilt's built-in Fabric API compat layer); LiteLoader `LiteMod` interface discovery + `init(File)`. All five loader branches are now developed. |
 | 2026-08-28 | Adopted the AprismWarp editor catalog extension: optional root-level `aprismwarp.editor.json` using `aprismwarp.aep-editor/v1`; added extension self-version guidance and packaging DSL convention. |
 | 2026-08-28 | Added v26.9-Alpha.2 AEP format adaptation to Section 4a: every AEP variant on every Refract branch must carry the editor catalog, the `aprismRange` must match Aprism v26.8, and the extension manifest must declare a `version` field. Verified 32/32 variants structurally; published five Pre-Releases via workflow_dispatch. |
+| 2026-08-28 | Strict audit remediation: updated Section 4 template to the shipped reality (`version` 26.9.0-alpha.2, `aprismRange` [26.0.0,28.0.0), explicit `mcEdit`/`mcVersion`), replaced the stale unprefixed tag scheme with the loader-prefixed scheme, and rewrote Section 8 to describe dynamic Aprism core alignment (range-based contract, not version pairing). |
+
+<!-- GitHub@NDBlockConnect | BlockConnect@StarsailsClover -->
