@@ -181,7 +181,7 @@ An AprismRefract build resolves its Aprism core alignment dynamically from
 the sibling Aprism checkout's `gradle.properties` at build time. The
 `aprismRange` declared in manifests (currently `[26.0.0,28.0.0)`) covers the
 Aprism core line the branches are built against (currently Aprism
-`v26.8-Alpha.8`). Refract minor versions may run ahead of the core minor; the
+`v26.8-Alpha 8`). Refract minor versions may run ahead of the core minor; the
 range, not a version-pairing rule, is the compatibility contract. If Aprism
 core's extension/loader-support contract changes incompatibly, bump
 `aprismRange` and note it in FACT.md.
