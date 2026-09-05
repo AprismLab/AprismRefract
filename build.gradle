@@ -98,8 +98,12 @@ dependencies {
     compileOnly 'org.ow2.asm:asm:9.9'
 
     // MC-typed shim compilation (only when a client jar was found above).
+    // Mixin annotations are needed by the world-join dispatcher mixin, which
+    // lives in the MC-typed source set. compileOnly: the Aprism agent ships
+    // Mixin at runtime; the annotation classes must never be bundled.
     if (mcJar) {
         compileOnly files(mcJar)
+        compileOnly 'net.fabricmc:sponge-mixin:0.16.5+mixin.0.8.7'
     }
 
     // Branch-local test suite: runs the real Aprism runtime against the

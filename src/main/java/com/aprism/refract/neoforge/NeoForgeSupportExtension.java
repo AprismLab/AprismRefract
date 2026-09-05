@@ -61,6 +61,30 @@ public final class NeoForgeSupportExtension implements IAprismExtension {
         // Own the NeoForge entrypoint dispatch: the core delegates to this
         // handler for every mod discovered under loader key "N".
         context.registerEntrypointHandler(NEOFORGE_KEY, new NeoForgeEntrypointHandler());
+
+        // World-join dispatcher (v26.9-Alpha.3): offer the extension's mixin
+        // configuration so the shim game bus receives real world-join
+        // moments. Event-driven client mods (JEI) gate their in-world
+        // startup on ClientPlayerNetworkEvent.LoggingIn, which only a hook
+        // into vanilla's ClientPacketListener can produce. The mixin class
+        // lives in the MC-typed source set and only exists when a local
+        // unobfuscated client jar was present at build time, so gate the
+        // registration on its presence (graceful degradation, CI-safe).
+        try {
+            Class.forName(
+                    "com.aprism.refract.neoforge.mixin.ClientPacketListenerMixin",
+                    false, NeoForgeSupportExtension.class.getClassLoader());
+            com.aprism.loader.AprismMixinBootstrap.offerMixinConfig(
+                    "neoforge-support.mixins.json");
+            context.getLogger().info(
+                    "NeoForge-Support world-join mixin registered"
+                            + " (ClientPacketListener -> LoggingIn)");
+        } catch (ClassNotFoundException absent) {
+            context.getLogger().info(
+                    "NeoForge-Support world-join mixin unavailable"
+                            + " (built without MC-typed shims); event-driven"
+                            + " in-world startup hooks are disabled");
+        }
         context.getLogger().info("NeoForge-Support registered: scanning "
                 + NEOFORGE_MODS_FOLDER + "/ for NeoForge mods (loader key "
                 + NEOFORGE_KEY + "), entrypoint dispatch owned by this extension");
